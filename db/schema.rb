@@ -26,8 +26,15 @@ ActiveRecord::Schema.define(version: 2022_02_03_231555) do
   end
 
   create_table "shifts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "company"
+    t.string "shift_type"
+    t.string "location"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_shifts_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -40,4 +47,5 @@ ActiveRecord::Schema.define(version: 2022_02_03_231555) do
   end
 
   add_foreign_key "recipes", "users"
+  add_foreign_key "shifts", "users"
 end

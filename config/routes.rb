@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+
+  get "/shifts", to: "shifts#index"
+
   namespace :api do
     resources :recipes, only: [:index, :create]
     post "/signup", to: "users#create"
