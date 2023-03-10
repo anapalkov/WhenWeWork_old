@@ -9,7 +9,6 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
 
-
 function MyShifts({ user }) {
     const [allShifts, setShifts] = useState([]);
 
@@ -21,43 +20,64 @@ function MyShifts({ user }) {
 
 
     const [selectedDate, setSelectedDate] = useState(null)
-    const MyCurrentShifts = allShifts.filter((x) => {
-        console.log(x.user.id)
-        return x.user.id === user.id
-    }
-    )
+    const MyCurrentShifts = allShifts.filter((x) => x.user.id === user.id)
+
+// TRADE SHIFT BUTTON
+const [tradingstatus, setTradingstatus] = useState([])
+const handleShiftTrade = (e) => {
+    // const [errors, setErrors] = useState([]);
+    // const [isLoading, setIsLoading] = useState(false);
+    e.preventDefault();
+    // setErrors([]);
+    // setIsLoading(true);
+    fetch("http://localhost:3000/shifts", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            trading: true
+        })
+    }).then((r) => {
+        // setIsLoading(false);
+        if (r.ok) {
+            console.log(r.json())
+            // r.json().then((user) => onLogin(user));
+        } else {
+            // r.json().then((err) => setErrors(err.errors));
+        }
+    });
+}
+
+
+
 
     return (
         <Wrapper>
-
             <DatePicker selected={selectedDate} onChange={setSelectedDate} />
-
             {MyCurrentShifts.length > 0 ? (
                 MyCurrentShifts.map((shift) => (
-                    // if (shift.user_id == user.id)
-
-                    <Recipe key={shift.id}>
+                    <Shift key={shift.id}>
                         <Box>
                             <h2>{shift.title}</h2>
                             <p>Start Time: {shift.start_time}</p>
                             <p>End Time: {shift.end_time}</p>
                             <p>Location: {shift.location}</p>
                             <p>Type: {shift.shift_type}</p>
+                            <p>Trading? {shift.trading ? ('YES') : ('NO')}</p>
                             {/* &nbsp;·&nbsp; */}
                             {/* <cite>By {shift.user.username}</cite> */}
-
                             {/* <ReactMarkdown>{shift.location}</ReactMarkdown> */}
+                            <Button onClick={handleShiftTrade}>Trade Shift</Button>
                         </Box>
-                    </Recipe>
-
-
+                    </Shift>
                 ))
             ) : (
                 <>
                     <h2>No Shifts Found</h2>
-                    <Button as={Link} to="/new">
+                    {/* <Button as={Link} to="/new">
                         Make a New Recipe
-                    </Button>
+                    </Button> */}
                 </>
             )}
         </Wrapper>
@@ -69,7 +89,7 @@ const Wrapper = styled.section`
   margin: 40px auto;
 `;
 
-const Recipe = styled.article`
+const Shift = styled.article`
   margin-bottom: 24px;
 `;
 
