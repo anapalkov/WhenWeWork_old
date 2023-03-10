@@ -10,6 +10,23 @@ function SignUpForm({ onLogin }) {
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+
+  // ADMIN ?
+  const [checked, setChecked] = React.useState(false);
+  const handleChange = () => {
+    setChecked(!checked);
+  };
+  const Checkbox = ({ label, value, onChange }) => {
+    return (
+      <label>
+        <input type="checkbox" checked={value} onChange={onChange} />
+        {label}
+      </label>
+    );
+  };
+
+
+
   function handleSubmit(e) {
     e.preventDefault();
     setErrors([]);
@@ -25,6 +42,7 @@ function SignUpForm({ onLogin }) {
         password_confirmation: passwordConfirmation,
         image_url: imageUrl,
         bio,
+        admin: checked
       })
     }).then((r) => {
       setIsLoading(false);
@@ -69,13 +87,20 @@ function SignUpForm({ onLogin }) {
         />
       </FormField>
       <FormField>
-        <Label htmlFor="imageUrl">Profile Image</Label>
-        <Input
+        <Label htmlFor="imageUrl">
+        {/* <Input
           type="text"
           id="imageUrl"
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
+        /> */}
+        <Checkbox
+          label=""
+          value={checked}
+          onChange={handleChange}
         />
+       Admin {checked.toString()}</Label>
+
       </FormField>
       <FormField>
         <Label htmlFor="bio">Bio</Label>

@@ -7,6 +7,7 @@ class CreateShifts < ActiveRecord::Migration[6.1]
       t.string :location
       t.datetime :start_time
       t.datetime :end_time
+      t.boolean :trading
       t.timestamps
     end
   end

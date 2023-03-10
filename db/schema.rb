@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_231555) do
     t.string "location"
     t.datetime "start_time"
     t.datetime "end_time"
+    t.boolean "trading"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_shifts_on_user_id"
@@ -42,6 +43,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_231555) do
     t.string "password_digest"
     t.string "image_url"
     t.string "bio"
+    t.boolean "admin"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

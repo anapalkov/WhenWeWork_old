@@ -4,6 +4,7 @@ import NavBar from "./NavBar";
 import Login from "../pages/Login";
 import RecipeList from "../pages/RecipeList";
 import NewRecipe from "../pages/NewRecipe";
+import MyShifts from "../pages/MyShifts";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -28,7 +29,8 @@ function App() {
             <NewRecipe user={user} />
           </Route>
           <Route path="/">
-            <RecipeList />
+            {/* <RecipeList /> */}
+            <MyShifts user={user}/>
           </Route>
         </Switch>
       </main>
