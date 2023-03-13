@@ -1,5 +1,7 @@
 class User < ApplicationRecord
   has_many :recipes
+  has_many :shifts
+  belongs_to :company
   
   has_secure_password
 

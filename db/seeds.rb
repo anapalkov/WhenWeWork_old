@@ -7,15 +7,20 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 puts "Deleting all"
-Recipe.destroy_all
+Company.destroy_all
 Shift.destroy_all
 User.destroy_all
 
+puts "Creating Companies..."
+company1 = Company.create(name: 'Initech', secretkey: 'pw')
+
 puts "Creating Users..."
-user1 = User.create(username: 'bob', password: '123', bio: 'simple bob', admin: true, )
+user1 = User.create(username: 'bob', password: '123', admin: true, company_id: company1.id)
+user2 = User.create(username: 'joe', password: '123', admin: true, company_id: company1.id)
 
 puts "Creating Shifts..."
-#concert1 = Concert.create(date: '8/12/2011', band1: 'Blink 182', band2: 'My Chemical Romance', band3: '', band4: '', venuename: 'Jiffy Lube Live, VA', festival: false)
-shift1 = Shift.create(trading: false, user_id: user1.id, company: 'default', shift_type: 'default', location: 'Reston', start_time: DateTime.new(2023, 3, 9, 9, 0, 0), end_time: DateTime.new(2023, 3, 9, 17, 0, 0))
-shift2 = Shift.create(trading: true, user_id: user1.id, company: 'default', shift_type: 'default', location: 'Reston', start_time: DateTime.new(2023, 3, 10, 10, 0, 0), end_time: DateTime.new(2023, 3, 10, 17, 0, 0))
-shift3 = Shift.create(trading: false, user_id: user1.id, company: 'default', shift_type: 'default', location: 'Reston', start_time: DateTime.new(2023, 3, 11, 10, 0, 0), end_time: DateTime.new(2023, 3, 11, 17, 0, 0))
+shift1 = Shift.create(trading: false, user_id: user1.id, shift_type: 'pest control', location: 'Reston', start_time: DateTime.new(2023, 3, 9, 9, 0, 0), end_time: DateTime.new(2023, 3, 9, 17, 0, 0))
+shift2 = Shift.create(trading: true, user_id: user1.id, shift_type: 'delivery guy', location: 'Reston', start_time: DateTime.new(2023, 3, 10, 10, 0, 0), end_time: DateTime.new(2023, 3, 10, 17, 0, 0))
+shift3 = Shift.create(trading: false, user_id: user1.id, shift_type: 'cleaner', location: 'Reston', start_time: DateTime.new(2023, 3, 11, 10, 0, 0), end_time: DateTime.new(2023, 3, 11, 17, 0, 0))
+shift4 = Shift.create(trading: false, user_id: user1.id, shift_type: 'cook', location: 'Reston', start_time: DateTime.new(2023, 3, 20, 10, 0, 0), end_time: DateTime.new(2023, 3, 20, 17, 0, 0))
+shift5 = Shift.create(trading: false, user_id: user2.id, shift_type: 'cook', location: 'Reston', start_time: DateTime.new(2023, 3, 20, 10, 0, 0), end_time: DateTime.new(2023, 3, 20, 17, 0, 0))

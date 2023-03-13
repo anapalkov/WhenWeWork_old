@@ -30,7 +30,7 @@ function NavBar({ user, setUser }) {
         </Button>
       </Nav>
     </Wrapper>
-    <h4>Welcome {user.username} from {user.company}!</h4>
+    <center><h4>Welcome {user.username} from {user.company.name}!</h4></center>
     </div>
 
   );

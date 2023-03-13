@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
-  get "/shifts", to: "shifts#index"
+  # get "/shifts", to: "shifts#index"
+  get "/companies", to: "companies#index"
+  resources :shifts, only: [:index, :create, :show, :update]
 
   namespace :api do
     resources :recipes, only: [:index, :create]
