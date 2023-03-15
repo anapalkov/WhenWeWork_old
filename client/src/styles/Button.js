@@ -6,9 +6,13 @@ const COLORS = {
     "--accent": "white",
   },
   secondary: {
+    "--main": "DarkSlateBlue",
+    "--accent": "white",
+  },
+  tertiary: {
     "--main": "lavenderblush",
     "--accent": "indigo",
-  },
+  }
 };
 
 function Button({ variant = "fill", color = "primary", ...props }) {

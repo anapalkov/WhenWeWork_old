@@ -13,28 +13,45 @@ import 'react-datepicker/dist/react-datepicker.css'
 function MyShifts({ user }) {
     // DATEPICKER TBD
     const [selectedDate, setSelectedDate] = useState(null)
-    // FETCH ALL SHIFTS, should switch to api/me instead
-    const [allShifts, setAllShifts] = useState([]);
+    // useState(null)
+    const [filteredShifts, setFilteredShifts] = useState([])
+    // FETCH ALL MY SHIFTS and SORT
+    const [allMyShifts, setAllMyShifts] = useState([]);
     useEffect(() => {
         //     fetch("/shifts")
         //         .then((r) => r.json())
-        //         .then(setAllShifts);
+        //         .then(setAllMyShifts);
         // }, []);
         fetch("/api/me")
-            .then((r) => r.json())
-            .then(json => setAllShifts(json.shifts));
+            .then(r => r.json())
+            .then(json => {
+                setAllMyShifts(json.shifts.sort((a, b) => { return new Date(a.end_time) - new Date(b.end_time) }))
+                setFilteredShifts(json.shifts.sort((a, b) => { return new Date(a.end_time) - new Date(b.end_time) }))
+            }
+            );
     }, []);
 
     // FILTER OUT OTHER PEOPLES SHIFTS
-    // const MyCurrentShifts = allShifts.filter((x) => x.user.id === user.id)
-    const MyCurrentShifts = allShifts
-    MyCurrentShifts.sort((a, b) => {
-        const atime = Date(a.end_time)
-        const btime = Date(b.end_time)
-        console.log([a.end_time, atime, Date(2019,7)])
-        return atime - btime
+    //const MyCurrentShifts = allMyShifts.filter((x) => x.user.id === user.id)
+
+    // TIME DISPLAY IN CORRECT FORMAT
+    function convertTime(x) {
+        // console.log(`Hello, ${name}!`);
+        const time = new Date(x)
+        var timestring = time.getMonth() + 1 + "/" + time.getDate() + "/" + time.getFullYear() + " @ "
+        // var hours = time.getUTCHours()
+        if (time.getUTCHours() === 0)
+            timestring += "00:"
+        else
+            timestring += time.getUTCHours() + ":"
+
+        if (time.getUTCMinutes() === 0)
+            timestring += "00"
+        else
+            timestring += time.getUTCMinutes()
+
+        return timestring
     }
-    )
 
     // HANDLE TRADE SHIFT
     const handleShiftTrade = (e, shift) => {
@@ -50,27 +67,56 @@ function MyShifts({ user }) {
             })
         }).then(res => res.json())
             .then(json => {
-                console.log(json)
-                //CHANGE IN DOM NOT DONE
-                console.log(allShifts.find((changingshift) => changingshift.id === shift.id).trading)
-                //MyCurrentShifts.map(obj => arr2.find(o => o.id === obj.id) || obj);
+                // Find the index of the object with id equal to x
+                const index = filteredShifts.findIndex(obj => obj.id === shift.id);
+                // Create a new object that is a copy of the original object at the index, but with trading set to false
+                const updatedObj = { ...filteredShifts[index], trading: !filteredShifts[index].trading };
+                // Create a new array that replaces the original object at the index with the updated object
+                const updatedData = [
+                    ...filteredShifts.slice(0, index),
+                    updatedObj,
+                    ...filteredShifts.slice(index + 1),
+                ];
+                setFilteredShifts(updatedData)
             })
     }
+
+    // const handleDateChange = () => {
+    //     // console.log(selectedDate)
+    //     // console.log(new Date(x.start_time).getDate())
+    //     // setSelectedDate(Date())
+    //     setFilteredShifts(allMyShifts.filter((x) => new Date(x.start_time).getDate() === selectedDate.getDate()))
+    // }
 
     return (
         <Wrapper>
             <h2> Upcoming Shifts</h2>
-            <DatePicker selected={selectedDate} onChange={setSelectedDate} />
-            {MyCurrentShifts.length > 0 ? (
-                MyCurrentShifts.map((shift) => (
-                    // {start = Date(shift.start_time)}
-                    // {end = Date(shift.start_time)}
+            <DatePicker selected={selectedDate} onChange={(date) => {
+                setSelectedDate(date); // NOT WORKING WHY
 
-                    <Shift key={shift.id}>
-                        <Box>
+                // console.log('og date is: ' +  date.getDate());
+                // console.log('selected date is: ' + selectedDate)
+                // console.log('allmyshifts dates are: ' + allMyShifts.map((x) => new Date(x.start_time).getDate()))
+                date ? setFilteredShifts(allMyShifts.filter((x) => new Date(x.start_time).getDate() === date.getDate() && new Date(x.start_time).getMonth() === date.getMonth())) : setFilteredShifts(allMyShifts)
+
+                // console.log("filtered shifts array")
+                // console.log(filteredShifts);  // NOT SETTING WHY
+                // console.log("og array ")
+                // console.log(allMyShifts.filter((x) => new Date(x.start_time).getDate() === date.getDate()))
+            }
+            }
+            />
+
+            {filteredShifts.length > 0 ? (
+                filteredShifts.map((shift) => (
+                    // {start = new Date(shift.start_time)}
+                    // {end = new Date(shift.start_time)}
+
+                    <Box>
+                        <Shift key={shift.id}>
                             <h3>{shift.shift_type}</h3>
-                            <p>Start Time: {shift.start_time}</p>
-                            <p>End Time: {shift.end_time}</p>
+                            <p>Start Time: {convertTime(shift.start_time)}</p>
+                            <p>End Time: {convertTime(shift.end_time)}</p>
                             <p>Location: {shift.location}</p>
                             {/* <p>Type: {shift.shift_type}</p> */}
                             {/* <p>Trading? {shift.trading ? ('YES') : ('NO')}</p> */}
@@ -78,10 +124,9 @@ function MyShifts({ user }) {
                             {/* <cite>By {shift.user.username}</cite> */}
                             {/* <ReactMarkdown>{shift.location}</ReactMarkdown> */}
                             {/* <Button onClick={handleShiftTrade(shift)}>Trade Shift</Button> */}
-                            <Button onClick={(e) => handleShiftTrade(e, shift)}>{shift.trading ? 'Cancel Trade' : 'Trade Shift'}</Button>
-
-                        </Box>
-                    </Shift>
+                            <Button color={shift.trading ? 'primary' : 'secondary'} onClick={(e) => handleShiftTrade(e, shift)}>{shift.trading ? 'Cancel Trade' : 'Trade Shift'}</Button>
+                        </Shift>
+                    </Box>
                 ))
             ) : (
                 <>
@@ -103,5 +148,11 @@ const Wrapper = styled.section`
 const Shift = styled.article`
   margin-bottom: 24px;
 `;
+
+const Card = styled(Box)({
+
+    // border: '1px solid #454545',
+    // boxShadow: '0 2px 4px rgba(0, 0, 0, .125)',
+})
 
 export default MyShifts;
