@@ -115,8 +115,7 @@ function MyShifts({ user }) {
                     <Box>
                         <Shift key={shift.id}>
                             <h3>{shift.shift_type}</h3>
-                            <p>Start Time: {convertTime(shift.start_time)}</p>
-                            <p>End Time: {convertTime(shift.end_time)}</p>
+                            <p>{convertTime(shift.start_time)} - {convertTime(shift.end_time)}</p>
                             <p>Location: {shift.location}</p>
                             {/* <p>Type: {shift.shift_type}</p> */}
                             {/* <p>Trading? {shift.trading ? ('YES') : ('NO')}</p> */}
