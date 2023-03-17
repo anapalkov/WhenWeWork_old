@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route, BrowserRouter} from "react-router-dom";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 import NavBar from "./NavBar";
 import Login from "../pages/Login";
 import RecipeList from "../pages/RecipeList";
 import NewRecipe from "../pages/NewRecipe";
 import MyShifts from "../pages/MyShifts";
+import AvailableShifts from "../pages/AvailableShifts";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -28,13 +29,16 @@ function App() {
           <Route path="/new">
             <NewRecipe user={user} />
           </Route>
+          <Route path="/open">
+            <AvailableShifts user={user} />
+          </Route>
           <Route path="/">
             {/* <RecipeList /> */}
-            <MyShifts user={user}/>
+            <MyShifts user={user} />
           </Route>
         </Switch>
       </main>
-      
+
     </>
   );
 }

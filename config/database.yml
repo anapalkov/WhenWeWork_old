@@ -23,7 +23,7 @@ default: &default
 
 development:
   <<: *default
-  database: phase_4_deploying_demo_app_development
+  database: WhenWeWork_development
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -55,9 +55,10 @@ development:
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
-test:
-  <<: *default
-  database: phase_4_deploying_demo_app_test
+
+# test:
+#   <<: *default
+#   database: phase_4_deploying_demo_app_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -81,6 +82,6 @@ test:
 #
 production:
   <<: *default
-  database: phase_4_deploying_demo_app_production
-  username: phase_4_deploying_demo_app
+  database: WhenWeWork_development
+  username: WhenWeWork_demo_app
   password: <%= ENV['PHASE_4_DEPLOYING_DEMO_APP_DATABASE_PASSWORD'] %>

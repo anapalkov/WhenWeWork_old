@@ -19,10 +19,10 @@ function NavBar({ user, setUser }) {
         <Link to="/">WhenWeWork</Link>
       </Logo>
       <Nav>
-        <Button as={Link} to="/new">
+        <Button as={Link} to="/open">
           Available Shifts
         </Button>
-        <Button as={Link} to="/new">
+        <Button as={Link} to="/">
           My Shifts
         </Button>
         <Button variant="outline" onClick={handleLogoutClick}>
