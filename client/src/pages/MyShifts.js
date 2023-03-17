@@ -18,10 +18,6 @@ function MyShifts({ user }) {
     // FETCH ALL MY SHIFTS and SORT
     const [allMyShifts, setAllMyShifts] = useState([]);
     useEffect(() => {
-        //     fetch("/shifts")
-        //         .then((r) => r.json())
-        //         .then(setAllMyShifts);
-        // }, []);
         fetch("/api/me")
             .then(r => r.json())
             .then(json => {
@@ -30,9 +26,6 @@ function MyShifts({ user }) {
             }
             );
     }, []);
-
-    // FILTER OUT OTHER PEOPLES SHIFTS
-    //const MyCurrentShifts = allMyShifts.filter((x) => x.user.id === user.id)
 
     // TIME DISPLAY IN CORRECT FORMAT
     function convertTime(x) {
@@ -57,6 +50,7 @@ function MyShifts({ user }) {
     const handleShiftTrade = (e, shift) => {
         e.preventDefault();
         console.log(shift)
+        //I don't like this because this gives user access to all shifts, not just their own
         fetch(`/shifts/${shift.id}`, {
             method: "PUT",
             headers: {
@@ -81,48 +75,25 @@ function MyShifts({ user }) {
             })
     }
 
-    // const handleDateChange = () => {
-    //     // console.log(selectedDate)
-    //     // console.log(new Date(x.start_time).getDate())
-    //     // setSelectedDate(Date())
-    //     setFilteredShifts(allMyShifts.filter((x) => new Date(x.start_time).getDate() === selectedDate.getDate()))
-    // }
 
     return (
         <Wrapper>
             <h2> Upcoming Shifts</h2>
             <DatePicker selected={selectedDate} onChange={(date) => {
-                setSelectedDate(date); // NOT WORKING WHY
-
-                // console.log('og date is: ' +  date.getDate());
-                // console.log('selected date is: ' + selectedDate)
-                // console.log('allmyshifts dates are: ' + allMyShifts.map((x) => new Date(x.start_time).getDate()))
+                setSelectedDate(date);
                 date ? setFilteredShifts(allMyShifts.filter((x) => new Date(x.start_time).getDate() === date.getDate() && new Date(x.start_time).getMonth() === date.getMonth())) : setFilteredShifts(allMyShifts)
-
-                // console.log("filtered shifts array")
-                // console.log(filteredShifts);  // NOT SETTING WHY
-                // console.log("og array ")
-                // console.log(allMyShifts.filter((x) => new Date(x.start_time).getDate() === date.getDate()))
             }
             }
             />
 
             {filteredShifts.length > 0 ? (
                 filteredShifts.map((shift) => (
-                    // {start = new Date(shift.start_time)}
-                    // {end = new Date(shift.start_time)}
-
                     <Box>
                         <Shift key={shift.id}>
                             <h3>{shift.shift_type}</h3>
                             <p>{convertTime(shift.start_time)} - {convertTime(shift.end_time)}</p>
                             <p>Location: {shift.location}</p>
-                            {/* <p>Type: {shift.shift_type}</p> */}
-                            {/* <p>Trading? {shift.trading ? ('YES') : ('NO')}</p> */}
-                            {/* &nbsp;·&nbsp; */}
-                            {/* <cite>By {shift.user.username}</cite> */}
-                            {/* <ReactMarkdown>{shift.location}</ReactMarkdown> */}
-                            {/* <Button onClick={handleShiftTrade(shift)}>Trade Shift</Button> */}
+                            {/* Button to trade shift */}
                             <Button color={shift.trading ? 'primary' : 'secondary'} onClick={(e) => handleShiftTrade(e, shift)}>{shift.trading ? 'Cancel Trade' : 'Trade Shift'}</Button>
                         </Shift>
                     </Box>
@@ -130,11 +101,12 @@ function MyShifts({ user }) {
             ) : (
                 <>
                     <h2>No Shifts Found</h2>
-                    {/* <Button as={Link} to="/new">
-                        Make a New Recipe
-                    </Button> */}
                 </>
             )}
+
+
+
+
         </Wrapper>
     );
 }
