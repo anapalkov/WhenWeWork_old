@@ -11,18 +11,15 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 
 function MyShifts({ user }) {
-    // DATEPICKER TBD
     const [selectedDate, setSelectedDate] = useState(null)
-    // useState(null)
     const [filteredShifts, setFilteredShifts] = useState([])
-    // FETCH ALL MY SHIFTS and SORT
     const [allMyShifts, setAllMyShifts] = useState([]);
     useEffect(() => {
         fetch("/api/me")
             .then(r => r.json())
             .then(json => {
-                setAllMyShifts(json.shifts.sort((a, b) => { return new Date(a.end_time) - new Date(b.end_time) }))
-                setFilteredShifts(json.shifts.sort((a, b) => { return new Date(a.end_time) - new Date(b.end_time) }))
+                setAllMyShifts(json.shifts.sort((a, b) => { return new Date(a.end) - new Date(b.end) }))
+                setFilteredShifts(json.shifts.sort((a, b) => { return new Date(a.end) - new Date(b.end) }))
             }
             );
     }, []);
@@ -81,7 +78,7 @@ function MyShifts({ user }) {
             <h2> Upcoming Shifts</h2>
             <DatePicker selected={selectedDate} onChange={(date) => {
                 setSelectedDate(date);
-                date ? setFilteredShifts(allMyShifts.filter((x) => new Date(x.start_time).getDate() === date.getDate() && new Date(x.start_time).getMonth() === date.getMonth())) : setFilteredShifts(allMyShifts)
+                date ? setFilteredShifts(allMyShifts.filter((x) => new Date(x.start).getDate() === date.getDate() && new Date(x.start).getMonth() === date.getMonth())) : setFilteredShifts(allMyShifts)
             }
             }
             />
@@ -90,8 +87,8 @@ function MyShifts({ user }) {
                 filteredShifts.map((shift) => (
                     <Box>
                         <Shift key={shift.id}>
-                            <h3>{shift.shift_type}</h3>
-                            <p>{convertTime(shift.start_time)} - {convertTime(shift.end_time)}</p>
+                            <h3>{shift.title}</h3>
+                            <p>{convertTime(shift.start)} - {convertTime(shift.end)}</p>
                             <p>Location: {shift.location}</p>
                             {/* Button to trade shift */}
                             <Button color={shift.trading ? 'primary' : 'secondary'} onClick={(e) => handleShiftTrade(e, shift)}>{shift.trading ? 'Cancel Trade' : 'Trade Shift'}</Button>

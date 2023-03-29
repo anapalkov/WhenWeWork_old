@@ -4,10 +4,10 @@ class CreateShifts < ActiveRecord::Migration[6.1] # rubocop:todo Style/Documenta
   def change
     create_table :shifts do |t|
       t.belongs_to :user, null: false, foreign_key: true
-      t.string :shift_type
+      t.string :title
       t.string :location
-      t.datetime :start_time
-      t.datetime :end_time
+      t.datetime :start
+      t.datetime :end
       t.boolean :trading
       t.timestamps
     end

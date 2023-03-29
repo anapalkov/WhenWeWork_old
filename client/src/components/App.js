@@ -7,6 +7,7 @@ import NewRecipe from "../pages/NewRecipe";
 import MyShifts from "../pages/MyShifts";
 import AvailableShifts from "../pages/AvailableShifts";
 import Test from "../pages/Test";
+import Test2 from "../pages/Test2";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -35,6 +36,9 @@ function App() {
           </Route>
           <Route path="/test">
             <Test user={user} />
+          </Route>
+          <Route path="/test2">
+            <Test2 user={user} />
           </Route>
           <Route path="/">
             {/* <RecipeList /> */}

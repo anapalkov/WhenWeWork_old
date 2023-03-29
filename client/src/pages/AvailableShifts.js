@@ -11,41 +11,28 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 
 function AvailableShifts({ user }) {
-    // DATEPICKER TBD
     const [selectedDate, setSelectedDate] = useState(null)
-    // useState(null)
     const [filteredShifts, setFilteredShifts] = useState([])
     // FETCH ALL MY SHIFTS and SORT
     const [allAvailableShifts, setAllAvailableShifts] = useState([]);
     useEffect(() => {
-        //     fetch("/shifts")
-        //         .then((r) => r.json())
-        //         .then(setAllMyShifts);
-        // }, []);
         fetch(`/companies/${user.company.id}`)
             .then(r => r.json())
             .then(json => {
                 console.log(user.company_id)
                 console.log(json.shifts)
-                const sortedShifts = json.shifts.sort((a, b) => { return new Date(a.end_time) - new Date(b.end_time) })
+                const sortedShifts = json.shifts.sort((a, b) => { return new Date(a.end) - new Date(b.end) })
 
                 setAllAvailableShifts(sortedShifts.filter((x) => x.trading === true))
                 setFilteredShifts(sortedShifts.filter((x) => x.trading === true))
-                //&& x.user.id !== user.id)
-                //TO FIX THIS AND FUTURE ISSUES WE NEED TO HAVE BACK END HIERARCHY
             }
             );
     }, []);
 
-    // FILTER OUT OTHER PEOPLES SHIFTS
-    //const MyCurrentShifts = allMyShifts.filter((x) => x.user.id === user.id)
-
     // TIME DISPLAY IN CORRECT FORMAT
     function convertTime(x) {
-        // console.log(`Hello, ${name}!`);
         const time = new Date(x)
         var timestring = time.getMonth() + 1 + "/" + time.getDate() + "/" + time.getFullYear() + " @ "
-        // var hours = time.getUTCHours()
         if (time.getUTCHours() === 0)
             timestring += "00:"
         else
@@ -55,7 +42,6 @@ function AvailableShifts({ user }) {
             timestring += "00"
         else
             timestring += time.getUTCMinutes()
-
         return timestring
     }
 
@@ -103,7 +89,7 @@ function AvailableShifts({ user }) {
                 // console.log('og date is: ' +  date.getDate());
                 // console.log('selected date is: ' + selectedDate)
                 // console.log('allmyshifts dates are: ' + allMyShifts.map((x) => new Date(x.start_time).getDate()))
-                date ? setFilteredShifts(allAvailableShifts.filter((x) => new Date(x.start_time).getDate() === date.getDate() && new Date(x.start_time).getMonth() === date.getMonth())) : setFilteredShifts(allAvailableShifts)
+                date ? setFilteredShifts(allAvailableShifts.filter((x) => new Date(x.start).getDate() === date.getDate() && new Date(x.start).getMonth() === date.getMonth())) : setFilteredShifts(allAvailableShifts)
 
                 // console.log("filtered shifts array")
                 // console.log(filteredShifts);  // NOT SETTING WHY
@@ -115,13 +101,10 @@ function AvailableShifts({ user }) {
 
             {filteredShifts.length > 0 ? (
                 filteredShifts.map((shift) => (
-                    // {start = new Date(shift.start_time)}
-                    // {end = new Date(shift.start_time)}
-
                     <Box>
                         <Shift key={shift.id}>
-                            <h3>{shift.shift_type}</h3>
-                            <p>{convertTime(shift.start_time)} - {convertTime(shift.end_time)}</p>
+                            <h3>{shift.title}</h3>
+                            <p>{convertTime(shift.start)} - {convertTime(shift.end)}</p>
                             <p>Location: {shift.location}</p>
                             {/* <p>Type: {shift.shift_type}</p> */}
                             {/* <p>Trading? {shift.trading ? ('YES') : ('NO')}</p> */}
