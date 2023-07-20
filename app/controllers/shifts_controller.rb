@@ -26,17 +26,7 @@ class ShiftsController < ApplicationController
   end
 
   def shift_params
-    params.require(:shift).permit(:user_id, :shift_type, :location, :start_time, :end_time, :trading)
-
-    # t.bigint "user_id", null: false
-    # t.string "shift_type"
-    # t.string "location"
-    # t.datetime "start_time"
-    # t.datetime "end_time"
-    # t.boolean "trading"
-    # t.datetime "created_at", precision: 6, null: false
-    # t.datetime "updated_at", precision: 6, null: false
-    # t.index ["user_id"], name: "index_shifts_on_user_id"
+    params.require(:shift).permit(:user_id, :title, :location, :start, :end, :trading)
   end
 
   def show

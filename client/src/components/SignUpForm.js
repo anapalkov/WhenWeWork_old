@@ -5,10 +5,9 @@ function SignUpForm({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [bio, setBio] = useState("");
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [company, setCompany] = useState("")
 
 
   // ADMIN ?
@@ -37,21 +36,21 @@ function SignUpForm({ onLogin }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username,
-        password,
+        username: username,
+        password: password,
         password_confirmation: passwordConfirmation,
-        image_url: imageUrl,
-        bio,
-        admin: checked
+        admin: checked,
+        company_id: company,
       })
-    }).then((r) => {
-      setIsLoading(false);
-      if (r.ok) {
-        r.json().then((user) => onLogin(user));
-      } else {
-        r.json().then((err) => setErrors(err.errors));
-      }
-    });
+    })
+      .then((r) => {
+        setIsLoading(false);
+        if (r.ok) {
+          r.json().then((user) => onLogin(user));
+        } else {
+          r.json().then((err) => setErrors(err.errors));
+        }
+      });
   }
 
   return (
@@ -87,22 +86,32 @@ function SignUpForm({ onLogin }) {
         />
       </FormField>
       <FormField>
+        <Label htmlFor="company">Company Id</Label>
+        <Input
+          type="text"
+          id="company"
+          autoComplete="off"
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+        />
+      </FormField>
+      <FormField>
         <Label htmlFor="imageUrl">
-        {/* <Input
+          {/* <Input
           type="text"
           id="imageUrl"
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
         /> */}
-        <Checkbox
-          label=""
-          value={checked}
-          onChange={handleChange}
-        />
-       Admin {checked.toString()}</Label>
+          <Checkbox
+            label=""
+            value={checked}
+            onChange={handleChange}
+          />
+          Admin {checked.toString()}</Label>
 
       </FormField>
-      <FormField>
+      {/* <FormField>
         <Label htmlFor="bio">Bio</Label>
         <Textarea
           rows="3"
@@ -110,7 +119,8 @@ function SignUpForm({ onLogin }) {
           value={bio}
           onChange={(e) => setBio(e.target.value)}
         />
-      </FormField>
+      </FormField> */}
+
       <FormField>
         <Button type="submit">{isLoading ? "Loading..." : "Sign Up"}</Button>
       </FormField>

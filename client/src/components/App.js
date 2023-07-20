@@ -8,6 +8,8 @@ import MyShifts from "../pages/MyShifts";
 import AvailableShifts from "../pages/AvailableShifts";
 import Test from "../pages/Test";
 import Test2 from "../pages/Test2";
+import CompanyDirectory from "../pages/CompanyDirectory";
+import UserSettings from "../pages/UserSettings";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -28,6 +30,13 @@ function App() {
       <NavBar user={user} setUser={setUser} />
       <main>
         <Switch>
+          <Route path="/settings">
+            <UserSettings user={user} />
+          </Route>
+          <Route path="/companies">
+            <CompanyDirectory user={user} />
+          </Route>
+
           <Route path="/new">
             <NewRecipe user={user} />
           </Route>
@@ -41,7 +50,6 @@ function App() {
             <Test2 user={user} />
           </Route>
           <Route path="/">
-            {/* <RecipeList /> */}
             <MyShifts user={user} />
           </Route>
         </Switch>

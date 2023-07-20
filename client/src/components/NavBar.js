@@ -13,24 +13,31 @@ function NavBar({ user, setUser }) {
   }
 
   return (
-<div>   
-    <Wrapper>       
-      <Logo>
-        <Link to="/">WhenWeWork</Link>
-      </Logo>
-      <Nav>
-        <Button as={Link} to="/open">
-          Available Shifts
-        </Button>
-        <Button as={Link} to="/">
-          My Shifts
-        </Button>
-        <Button variant="outline" onClick={handleLogoutClick}>
-          Logout
-        </Button>
-      </Nav>
-    </Wrapper>
-    <center><h4>Welcome {user.username} from {user.company.name}!</h4></center>
+    <div>
+      {/* Profile Page */}
+      <Wrapper>
+        <Logo>
+          <Link to="/">WhenWeWork</Link>
+        </Logo>
+        <Nav>
+          <Button as={Link} to="/companies">
+            Companies
+          </Button>
+          <Button as={Link} to="/open">
+            Available Shifts
+          </Button>
+          <Button as={Link} to="/">
+            My Shifts
+          </Button>
+          <Button as={Link} to="/settings">
+            Settings
+          </Button>
+          <Button variant="outline" onClick={handleLogoutClick}>
+            Logout
+          </Button>
+        </Nav>
+      </Wrapper>
+      <center><h4>Welcome {user.username} from {user.company.name}!</h4></center>
     </div>
 
   );

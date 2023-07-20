@@ -15,6 +15,7 @@ User.destroy_all
 
 puts "Creating Companies..."
 company1 = Company.create(name: "Initech", secretkey: "pw")
+company2 = Company.create(name: "Verizon", secretkey: "44")
 
 puts "Creating Users..."
 user1 = User.create(username: "bob", password: "123", admin: false, company_id: company1.id)
