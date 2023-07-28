@@ -14,13 +14,15 @@ Shift.destroy_all
 User.destroy_all
 
 puts "Creating Companies..."
+company0 = Company.create(name: "default", secretkey: "11")
 company1 = Company.create(name: "Initech", secretkey: "pw")
 company2 = Company.create(name: "Verizon", secretkey: "44")
 
 puts "Creating Users..."
-user1 = User.create(username: "bob", password: "123", admin: false, company_id: company1.id)
-user2 = User.create(username: "joe", password: "123", admin: false, company_id: company1.id)
-user3 = User.create(username: "stew", password: "123", admin: true, company_id: company1.id)
+user1 = User.create(username: "bob", password: "123", admin: false, company_id: company1.id, role: "user")
+user2 = User.create(username: "joe", password: "123", admin: false, company_id: company1.id, role: "user")
+user3 = User.create(username: "stew", password: "123", admin: true, company_id: company1.id, role: "manager")
+user4 = User.create(username: "stewy", password: "123", admin: true, company_id: company1.id, role: "head")
 
 puts "Creating Shifts..."
 

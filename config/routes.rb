@@ -6,11 +6,13 @@ Rails.application.routes.draw do
   resources :shifts, only: %i[index create show update]
   resources :companies, only: %i[index create show update]
   get "/companies", to: "companies#index"
+  get "/mycompany", to: "companies#show"
 
   namespace :api do
     resources :recipes, only: %i[index create]
     post "/signup", to: "users#create"
-    put "/signup", to: "users#update"
+    put "/signup/:id", to: "users#update"
+    # delete "/signup/:id", to: "users#delete"
     get "/me", to: "users#show"
     post "/login", to: "sessions#create"
     delete "/logout", to: "sessions#destroy"

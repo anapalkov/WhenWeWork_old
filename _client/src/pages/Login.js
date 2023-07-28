@@ -39,7 +39,7 @@ function Login({ onLogin }) {
 
 const Logo = styled.h1`
   font-family: "Permanent Marker", cursive;
-  font-size: 3rem;
+  font-size: 2rem;
   color: black;
   margin: 8px 0 16px;
 `;

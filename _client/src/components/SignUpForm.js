@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Error, Input, FormField, Label, Textarea } from "../styles";
+import { Link, useLocation } from "react-router-dom";
 
 function SignUpForm({ onLogin }) {
   const [username, setUsername] = useState("");
@@ -8,7 +9,7 @@ function SignUpForm({ onLogin }) {
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [company, setCompany] = useState("")
-
+  const location = useLocation();
 
   // ADMIN ?
   const [checked, setChecked] = React.useState(false);
@@ -24,9 +25,8 @@ function SignUpForm({ onLogin }) {
     );
   };
 
-
-
   function handleSubmit(e) {
+    console.log(username, password, passwordConfirmation, checked, company)
     e.preventDefault();
     setErrors([]);
     setIsLoading(true);
@@ -36,17 +36,26 @@ function SignUpForm({ onLogin }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: username,
-        password: password,
-        password_confirmation: passwordConfirmation,
-        admin: checked,
-        company_id: company,
+        user: {
+          username: username,
+          password: password,
+          password_confirmation: passwordConfirmation,
+          admin: checked,
+          role: 'admin',
+          company_id: 1
+        }
       })
     })
       .then((r) => {
         setIsLoading(false);
         if (r.ok) {
-          r.json().then((user) => onLogin(user));
+          r.json().then((user) => {
+            console.log(user)
+            onLogin(user)
+            // window.location.href = "http://localhost:4000/companysettings"; // Redirect the user
+          }
+          );
+
         } else {
           r.json().then((err) => setErrors(err.errors));
         }
@@ -71,7 +80,11 @@ function SignUpForm({ onLogin }) {
           type="password"
           id="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            console.log(e.target.value)
+            setPassword(e.target.value)
+          }
+          }
           autoComplete="current-password"
         />
       </FormField>
@@ -85,7 +98,7 @@ function SignUpForm({ onLogin }) {
           autoComplete="current-password"
         />
       </FormField>
-      <FormField>
+      {/* <FormField>
         <Label htmlFor="company">Company Id</Label>
         <Input
           type="text"
@@ -94,15 +107,9 @@ function SignUpForm({ onLogin }) {
           value={company}
           onChange={(e) => setCompany(e.target.value)}
         />
-      </FormField>
+      </FormField> */}
       <FormField>
-        <Label htmlFor="imageUrl">
-          {/* <Input
-          type="text"
-          id="imageUrl"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-        /> */}
+        <Label htmlFor="checked">
           <Checkbox
             label=""
             value={checked}
@@ -111,18 +118,10 @@ function SignUpForm({ onLogin }) {
           Admin {checked.toString()}</Label>
 
       </FormField>
-      {/* <FormField>
-        <Label htmlFor="bio">Bio</Label>
-        <Textarea
-          rows="3"
-          id="bio"
-          value={bio}
-          onChange={(e) => setBio(e.target.value)}
-        />
-      </FormField> */}
-
       <FormField>
-        <Button type="submit">{isLoading ? "Loading..." : "Sign Up"}</Button>
+        <Button type="submit">
+          {isLoading ? "Loading..." : "Sign Up"}
+        </Button>
       </FormField>
       <FormField>
         {errors.map((err) => (
@@ -132,5 +131,11 @@ function SignUpForm({ onLogin }) {
     </form>
   );
 }
+
+
+// fixes link: to="/" active={location.pathname === "/"}
+// <Button as={Link} to="/" active={location.pathname === "/"} onClick={handleLogoutClick}>
+//             Logout
+//           </Button>
 
 export default SignUpForm;

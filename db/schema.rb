@@ -22,16 +22,6 @@ ActiveRecord::Schema.define(version: 2023_03_13_174345) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "recipes", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "title"
-    t.text "instructions"
-    t.integer "minutes_to_complete"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_recipes_on_user_id"
-  end
-
   create_table "shifts", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "title"
@@ -48,13 +38,16 @@ ActiveRecord::Schema.define(version: 2023_03_13_174345) do
     t.bigint "company_id"
     t.string "username"
     t.string "password_digest"
-    t.string "image_url"
+    t.string "role"
+    t.string "fname"
+    t.string "lname"
+    t.string "email"
     t.boolean "admin"
+    t.integer "companyrequest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_users_on_company_id"
   end
 
-  add_foreign_key "recipes", "users"
   add_foreign_key "shifts", "users"
 end

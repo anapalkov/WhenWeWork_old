@@ -7,7 +7,7 @@ import { Box, Button } from "../styles";
 
 // import {DateTimePickerComponent} from '@syncfusion/ej2-react-calendars'
 import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+// import 'react-datepicker/dist/react-datepicker.css'
 
 
 function AvailableShifts({ user }) {
@@ -73,74 +73,64 @@ function AvailableShifts({ user }) {
             })
     }
 
-    // const handleDateChange = () => {
-    //     // console.log(selectedDate)
-    //     // console.log(new Date(x.start_time).getDate())
-    //     // setSelectedDate(Date())
-    //     setFilteredShifts(allMyShifts.filter((x) => new Date(x.start_time).getDate() === selectedDate.getDate()))
-    // }
-
     return (
         <Wrapper>
-            <h2> Available Shifts</h2>
-            <DatePicker selected={selectedDate} onChange={(date) => {
-                setSelectedDate(date); // NOT WORKING WHY
-
-                // console.log('og date is: ' +  date.getDate());
-                // console.log('selected date is: ' + selectedDate)
-                // console.log('allmyshifts dates are: ' + allMyShifts.map((x) => new Date(x.start_time).getDate()))
-                date ? setFilteredShifts(allAvailableShifts.filter((x) => new Date(x.start).getDate() === date.getDate() && new Date(x.start).getMonth() === date.getMonth())) : setFilteredShifts(allAvailableShifts)
-
-                // console.log("filtered shifts array")
-                // console.log(filteredShifts);  // NOT SETTING WHY
-                // console.log("og array ")
-                // console.log(allMyShifts.filter((x) => new Date(x.start_time).getDate() === date.getDate()))
-            }
-            }
-            />
+            <div className="centered-content">
+                <h2>Available Shifts</h2>
+                <DatePicker
+                    selected={selectedDate}
+                    onChange={(date) => {
+                        setSelectedDate(date);
+                        date
+                            ? setFilteredShifts(
+                                allAvailableShifts.filter(
+                                    (x) =>
+                                        new Date(x.start).getDate() === date.getDate() &&
+                                        new Date(x.start).getMonth() === date.getMonth()
+                                )
+                            )
+                            : setFilteredShifts(allAvailableShifts);
+                    }}
+                /></div>
 
             {filteredShifts.length > 0 ? (
                 filteredShifts.map((shift) => (
-                    <Box>
+                    <Card>
                         <Shift key={shift.id}>
                             <h3>{shift.title}</h3>
-                            <p>{convertTime(shift.start)} - {convertTime(shift.end)}</p>
+                            <p>
+                                {convertTime(shift.start)} - {convertTime(shift.end)}
+                            </p>
                             <p>Location: {shift.location}</p>
-                            {/* <p>Type: {shift.shift_type}</p> */}
-                            {/* <p>Trading? {shift.trading ? ('YES') : ('NO')}</p> */}
-                            {/* &nbsp;·&nbsp; */}
-                            {/* <cite>By {shift.user.username}</cite> */}
-                            {/* <ReactMarkdown>{shift.location}</ReactMarkdown> */}
-                            {/* <Button onClick={handleShiftTrade(shift)}>Trade Shift</Button> */}
-                            <Button color={shift.trading ? 'primary' : 'secondary'} onClick={(e) => handleShiftTrade(e, shift)}>Pick Up</Button>
+                            <Button
+                                color={shift.trading ? "primary" : "secondary"}
+                                onClick={(e) => handleShiftTrade(e, shift)}
+                            >
+                                Pick Up
+                            </Button>
                         </Shift>
-                    </Box>
+                    </Card>
                 ))
             ) : (
                 <>
-                    <h2>No Shifts Found</h2>
-                    {/* <Button as={Link} to="/new">
-                        Make a New Recipe
-                    </Button> */}
+                    <h2>No Available Shifts Found</h2>
                 </>
             )}
         </Wrapper>
     );
 }
 
-const Wrapper = styled.section`
-  max-width: 800px;
-  margin: 40px auto;
-`;
+const Wrapper = styled.div`
+      max-width: 800px;
+      margin: 120px auto;
+    `;
 
 const Shift = styled.article`
-  margin-bottom: 24px;
-`;
+      margin-bottom: 24px;
+    `;
 
-const Card = styled(Box)({
-
-    // border: '1px solid #454545',
-    // boxShadow: '0 2px 4px rgba(0, 0, 0, .125)',
-})
+const Card = styled(Box)`
+      // Apply styles to the Box component as needed
+    `;
 
 export default AvailableShifts;

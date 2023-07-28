@@ -20,10 +20,10 @@ class CompaniesController < ApplicationController # rubocop:todo Style/Documenta
         render json: company
       else
         # fix to specify exact error
-        render json: { error: 'validation errors' }
+        render json: { error: "validation errors" }
       end
     else
-      render json: { error: 'company not found' }, status: :not_found
+      render json: { error: "company not found" }, status: :not_found
     end
   end
 
@@ -31,13 +31,23 @@ class CompaniesController < ApplicationController # rubocop:todo Style/Documenta
     params.require(:company).permit(:company_id, :name, :secretkey)
   end
 
-  def show
-    company = Company.find_by(id: params[:id])
+  # def show
+  #   company = Company.find_by(id: params[:id])
 
+  #   if company
+  #     render json: company
+  #   else
+  #     render json: { error: 'company not found' }
+  #   end
+  # end
+  def show
+    # Use the @current_user to find the associated company
+    company = @current_user.company
     if company
       render json: company
     else
-      render json: { error: 'company not found' }
+      # Handle the case when the company does not exist or doesn't belong to the current user
+      render json: { error: "Company not found or doesn't belong to the current user" }, status: :not_found
     end
   end
 end

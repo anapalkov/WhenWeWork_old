@@ -75,13 +75,15 @@ function MyShifts({ user }) {
 
     return (
         <Wrapper>
-            <h2> Upcoming Shifts</h2>
-            <DatePicker selected={selectedDate} onChange={(date) => {
-                setSelectedDate(date);
-                date ? setFilteredShifts(allMyShifts.filter((x) => new Date(x.start).getDate() === date.getDate() && new Date(x.start).getMonth() === date.getMonth())) : setFilteredShifts(allMyShifts)
-            }
-            }
-            />
+            <div className="centered-content">
+                <h2> Upcoming Shifts</h2>
+                <DatePicker selected={selectedDate} onChange={(date) => {
+                    setSelectedDate(date);
+                    date ? setFilteredShifts(allMyShifts.filter((x) => new Date(x.start).getDate() === date.getDate() && new Date(x.start).getMonth() === date.getMonth())) : setFilteredShifts(allMyShifts)
+                }
+                }
+                />
+            </div>
 
             {filteredShifts.length > 0 ? (
                 filteredShifts.map((shift) => (
@@ -97,7 +99,7 @@ function MyShifts({ user }) {
                 ))
             ) : (
                 <>
-                    <h2>No Shifts Found</h2>
+                    <h2></h2>
                 </>
             )}
 
@@ -108,19 +110,13 @@ function MyShifts({ user }) {
     );
 }
 
-const Wrapper = styled.section`
-  max-width: 800px;
-  margin: 40px auto;
-`;
+const Wrapper = styled.div`
+      max-width: 800px;
+      margin: 120px auto;
+    `;
 
 const Shift = styled.article`
-  margin-bottom: 24px;
-`;
-
-const Card = styled(Box)({
-
-    // border: '1px solid #454545',
-    // boxShadow: '0 2px 4px rgba(0, 0, 0, .125)',
-})
+      margin-bottom: 24px;
+    `;
 
 export default MyShifts;
