@@ -31,15 +31,26 @@ class CompaniesController < ApplicationController # rubocop:todo Style/Documenta
     params.require(:company).permit(:company_id, :name, :secretkey)
   end
 
-  # def show
-  #   company = Company.find_by(id: params[:id])
-
+  # def unassigned
+  #   company = Company.first
   #   if company
   #     render json: company
   #   else
-  #     render json: { error: 'company not found' }
+  #     render json: { error: "No companies found" }
   #   end
   # end
+
+  def unassigned
+    company = Company.first
+
+    if company
+      users = company.users.where(companyrequest: @current_user.company_id)
+      render json: users, status: :ok
+    else
+      render json: { error: "Company not found" }, status: :not_found
+    end
+  end
+
   def show
     # Use the @current_user to find the associated company
     company = @current_user.company

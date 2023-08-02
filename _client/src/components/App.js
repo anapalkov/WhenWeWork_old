@@ -19,8 +19,8 @@ function App() {
     fetch("/api/me").then((r) => {
       if (r.ok) {
         r.json().then((user) => {
-          console.log("Signing In:")
-          console.log(user)
+          // console.log("Signing In:")
+          // console.log(user)
           setUser(user)
         }
         );
@@ -39,7 +39,7 @@ function App() {
       <main>
         <Switch>
           <Route path="/settings">
-            <UserSettings user={user} />
+            <UserSettings user={user} setUser={setUser} />
           </Route>
           {/* <Route path="/companies">
             <CompanyDirectory user={user} />

@@ -4,49 +4,46 @@ import styled from "styled-components";
 
 
 
-function UserSettings(props) {
-    const { user } = props;
-
-    // not needed until we want username updated
-    // const [UserSettings, setUserSettings] = useState([]);
-    // useEffect(() => {
-    //     fetch("/api/me")
-    //         .then((r) => r.json())
-    //         .then((data) => {
-    //             setUserSettings(data);
-    //             // console.log(data);
-    //             // console.log(user.company.id)
-    //         });
-    // }, []);
-
-    const [newusername, setNewUsername] = useState("");
+function UserSettings({ user, setUser }) {
+    // const  = props;
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
+    const [fname, setFname] = useState("");
+    const [lname, setLname] = useState("");
     const [errors, setErrors] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     // const [company, setCompany] = useState("")
 
 
     function handleSubmit(e) {
-        console.log(newusername)
+
         e.preventDefault();
         setErrors([]);
         setIsLoading(true);
+
+        const updatedUser = {
+            ...user,
+            fname: fname,
+            lname: lname
+        };
+
         fetch(`/api/signup/${user.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                username: newusername,
                 password: password,
                 password_confirmation: passwordConfirmation,
+                fname: fname,
+                lname: lname
                 // company_id: company,
             }),
         })
             .then((r) => {
                 setIsLoading(false);
                 if (r.ok) {
+                    setUser(updatedUser);
                     // r.json().then((user) => onLogin(user));
                 } else {
                     r.json().then((err) => setErrors(err.errors));
@@ -64,11 +61,10 @@ function UserSettings(props) {
                         id="username"
                         autoComplete="off"
                         defaultValue={user.username}
-                        // value={username}
-                        onChange={(e) => setNewUsername(e.target.value)}
+                        disabled // Add the disabled attribute
                     />
                 </FormField>
-                <FormField>
+                {/* <FormField>
                     <Label htmlFor="password">New Password</Label>
                     <Input
                         type="password"
@@ -87,35 +83,53 @@ function UserSettings(props) {
                         onChange={(e) => setPasswordConfirmation(e.target.value)}
                         autoComplete="current-password"
                     />
-                </FormField>
-                {/* <FormField>
-                    <Label htmlFor="company">Company Id</Label>
-                    <Input
-                        type="text"
-                        id="company"
-                        autoComplete="off"
-                        defaultValuevalue={user.company.id}
-                        onChange={(e) => setCompany(e.target.value)}
-                    />
                 </FormField> */}
                 <FormField>
-                    {/*<Label htmlFor="imageUrl">
-                     <Input
-                type="text"
-                id="imageUrl"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-              /> 
-                    <Checkbox
-                        label=""
-                        value={checked}
-                    // onChange={handleChange}
+                    <Label htmlFor="password">New Password</Label>
+                    <Input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="current-password"
+                        disabled // Add the disabled attribute
                     />
-                    Admin {checked.toString()}</Label>*/}
-
                 </FormField>
+
+
                 <FormField>
-                    <Button type="submit">{isLoading ? "Loading..." : "Change Settings"}</Button>
+                    <Label htmlFor="fname">First Name</Label>
+                    <Input
+                        type="text"
+                        id="fname"
+                        // value={fname}
+                        defaultValue={user.fname}
+                        onChange={(e) => setFname(e.target.value)}
+                    />
+                </FormField>
+                {/* <FormField>
+                    <Label htmlFor="lname">Last Name</Label>
+                    <Input
+                        type="text"
+                        id="lname"
+                        // value={lname}
+                        defaultValue={user.lname}
+                        onChange={(e) => setLname(e.target.value)}
+                    />
+                </FormField> */}
+
+
+
+
+
+
+
+
+
+
+
+                <FormField>
+                    <Button type="submit">{isLoading ? "Loading..." : "Save"}</Button>
                 </FormField>
                 <FormField>
                     {errors.map((err) => (

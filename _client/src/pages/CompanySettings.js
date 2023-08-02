@@ -1,8 +1,31 @@
 import styled from "styled-components";
 import CompanyDirectory from "./CompanyDirectory";
+import CompanyQueue from "./CompanyQueue";
 import UserList from "./UserList";
+import { useState, useEffect } from "react";
+
 function CompanySettings(props) {
     const { user } = props;
+    const [MyCompany, setMyCompany] = useState([]);
+    useEffect(() => {
+        fetch("/mycompany")
+            .then((r) => r.json())
+            .then((data) => {
+                setMyCompany(data);
+                console.log(data); // Logging the data received from the API call
+            })
+            .catch((error) => {
+                console.error("Error fetching MyCompany data:", error);
+            });
+    }, []);
+
+
+
+
+
+
+
+
     return (
         <div>
             {user.company.id === 1 ? (
@@ -13,13 +36,14 @@ function CompanySettings(props) {
             ) : user.admin === false ? (
 
                 <Wrapper><h1>you're in a company but you are not boss</h1>
-                    <UserList />
+                    <UserList user={user} MyCompany={MyCompany} setMyCompany={setMyCompany} />
                 </Wrapper>
 
             ) : (
 
                 <Wrapper><h1>you're in a company, boss</h1>
-                    <UserList />
+                    <CompanyQueue user={user} setMyCompany={setMyCompany} />
+                    <UserList user={user} MyCompany={MyCompany} setMyCompany={setMyCompany} />
                 </Wrapper>
             )
             }
