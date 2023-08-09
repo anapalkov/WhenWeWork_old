@@ -8,8 +8,8 @@ function UserSettings({ user, setUser }) {
     // const  = props;
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
-    const [fname, setFname] = useState("");
-    const [lname, setLname] = useState("");
+    const [fname, setFname] = useState(user.fname);
+    const [lname, setLname] = useState(user.lname);
     const [errors, setErrors] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     // const [company, setCompany] = useState("")
@@ -107,7 +107,7 @@ function UserSettings({ user, setUser }) {
                         onChange={(e) => setFname(e.target.value)}
                     />
                 </FormField>
-                {/* <FormField>
+                <FormField>
                     <Label htmlFor="lname">Last Name</Label>
                     <Input
                         type="text"
@@ -116,17 +116,7 @@ function UserSettings({ user, setUser }) {
                         defaultValue={user.lname}
                         onChange={(e) => setLname(e.target.value)}
                     />
-                </FormField> */}
-
-
-
-
-
-
-
-
-
-
+                </FormField>
 
                 <FormField>
                     <Button type="submit">{isLoading ? "Loading..." : "Save"}</Button>

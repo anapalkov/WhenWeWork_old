@@ -5,11 +5,12 @@ import Login from "../pages/Login";
 
 import MyShifts from "../pages/MyShifts";
 import AvailableShifts from "../pages/AvailableShifts";
-import Test from "../pages/Test";
-import Test2 from "../pages/Test2";
-import CompanyDirectory from "../pages/CompanyDirectory";
+// import Test from "../pages/Test";
+import BigCalendar from "../pages/BigCalendar";
+import CreateShift from "../pages/CreateShift";
 import UserSettings from "../pages/UserSettings";
 import CompanySettings from "../pages/CompanySettings";
+import CompanyShifts from "../pages/CompanyShifts"
 
 function App() {
   const [user, setUser] = useState(null);
@@ -47,14 +48,20 @@ function App() {
           <Route path="/companysettings">
             <CompanySettings user={user} />
           </Route>
+          <Route path="/createshift">
+            <CreateShift user={user} />
+          </Route>
           <Route path="/open">
             <AvailableShifts user={user} />
           </Route>
-          <Route path="/test">
+          {/* <Route path="/test">
             <Test user={user} />
+          </Route> */}
+          <Route path="/bigcalendar">
+            <BigCalendar user={user} />
           </Route>
-          <Route path="/test2">
-            <Test2 user={user} />
+          <Route path="/companyshifts">
+            <CompanyShifts user={user} />
           </Route>
           <Route path="/">
             <MyShifts user={user} />

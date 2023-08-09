@@ -27,18 +27,18 @@ user4 = User.create(username: "stewy", password: "123", admin: true, company_id:
 puts "Creating Shifts..."
 
 shift1 = Shift.create(trading: false, user_id: user1.id, title: "pest control", location: "Reston",
-                      start: DateTime.new(2023, 3, 9, 9, 0, 0), end: DateTime.new(2023, 3, 9, 17, 0, 0))
+                      start: DateTime.new(2023, 8, 9, 9, 0, 0), end: DateTime.new(2023, 8, 9, 17, 0, 0))
 
 shift2 = Shift.create(trading: true, user_id: user1.id, title: "delivery guy", location: "Reston",
-                      start: DateTime.new(2023, 3, 10, 10, 0, 0), end: DateTime.new(2023, 3, 10, 17, 0, 0))
+                      start: DateTime.new(2023, 8, 10, 10, 0, 0), end: DateTime.new(2023, 8, 10, 17, 0, 0))
 
 shift3 = Shift.create(trading: false, user_id: user1.id, title: "cleaner", location: "Reston",
-                      start: DateTime.new(2023, 3, 11, 10, 0, 0), end: DateTime.new(2023, 3, 11, 17, 0, 0))
+                      start: DateTime.new(2023, 8, 11, 10, 0, 0), end: DateTime.new(2023, 8, 11, 17, 0, 0))
 
 shift4 = Shift.create(trading: false, user_id: user1.id, title: "cook", location: "Reston",
-                      start: DateTime.new(2023, 3, 20, 10, 0, 0), end: DateTime.new(2023, 3, 20, 17, 0, 0))
+                      start: DateTime.new(2023, 8, 20, 10, 0, 0), end: DateTime.new(2023, 8, 20, 17, 0, 0))
 
 shift5 = Shift.create(trading: true, user_id: user2.id, title: "backup", location: "Reston",
-                      start: DateTime.new(2023, 3, 21, 10, 0, 0), end: DateTime.new(2023, 3, 21, 17, 0, 0))
+                      start: DateTime.new(2023, 8, 21, 10, 0, 0), end: DateTime.new(2023, 8, 21, 17, 0, 0))
 shift6 = Shift.create(trading: true, user_id: user3.id, title: "advertiser", location: "Reston",
-                      start: DateTime.new(2023, 3, 21, 10, 0, 0), end: DateTime.new(2023, 3, 21, 17, 0, 0))
+                      start: DateTime.new(2023, 8, 21, 10, 0, 0), end: DateTime.new(2023, 8, 21, 17, 0, 0))

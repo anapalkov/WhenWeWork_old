@@ -2,13 +2,12 @@ import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
-import React, { useState } from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
-import { useEffect, useRef, useCallback, buildMessage } from "react";
+import { useEffect, useRef, useCallback, buildMessage, useState } from "react";
+import styled from "styled-components";
 
 const locales = {
     "en-US": require("date-fns/locale/en-US"),
@@ -21,24 +20,14 @@ const localizer = dateFnsLocalizer({
     locales,
 });
 
-const events = [
-    {
-        title: "Big Meeting",
-        allDay: true,
-        start: new Date(2023, 3, 25),
-        end: new Date(2023, 3, 25),
-    },
-    {
-        title: "Vacation",
-        start: new Date(2023, 3, 7),
-        end: new Date(2023, 3, 10),
-    },
-    {
-        title: "Conference",
-        start: new Date(2023, 3, 20),
-        end: new Date(2023, 3, 23),
-    },
-];
+// const events = [
+//     {
+//         title: "Big Meeting",
+//         allDay: true,
+//         start: new Date(2023, 8, 25),
+//         end: new Date(2023, 8, 25),
+//     }
+// ];
 
 function OnSelectEvent() {
     const clickRef = useRef(null)
@@ -79,10 +68,10 @@ function OnSelectEvent() {
     }, [])
 }
 
-function Test2({ user }) {
+function BigCalendar({ user }) {
 
-    const [allEvents, setAllEvents] = useState(events);
-    const [allMyShifts, setAllMyShifts] = useState([]);
+    const [allEvents, setAllEvents] = useState([]);
+    // const [allMyShifts, setAllMyShifts] = useState([]);
     useEffect(() => {
         fetch("/api/me")
             .then(r => r.json())
@@ -94,8 +83,8 @@ function Test2({ user }) {
 
 
     // const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
-
-    console.log(allMyShifts)
+    console.log("ALL EVENTS")
+    console.log(allEvents)
 
     // function handleAddEvent() {
     //     for (let i = 0; i < allEvents.length; i++) {
@@ -117,12 +106,8 @@ function Test2({ user }) {
     // }
 
 
-
-
-
-
     return (
-        <div className="Calendar">
+        <BigCalendarWrapper className="Calendar">
             {/* <h1>Calendar</h1>
             <h2>Add New Event</h2>
             <div>
@@ -141,9 +126,17 @@ function Test2({ user }) {
                 style={{ height: 500, margin: "50px" }}
             // onSelectEvent={onSelectEvent}
             />
-        </div>
+        </BigCalendarWrapper>
     );
 }
 
-export default Test2;
+const BigCalendarWrapper = styled.div`
+  margin-top: 120px; /* Adjust the margin-top to create space below the NavBar */
+  ${'' /* display: flex;
+  flex-direction: column;
+  align-items: center; */}
+`;
+
+
+export default BigCalendar;
 

@@ -14,12 +14,18 @@ function CompanyQueue({ user, setMyCompany }) {
             .then((r) => r.json())
             .then((data) => {
                 setUnassignedUsers(data);
-                console.log(data); // Logging the data received from the API call
+                // if (!unassignedUsers) {
+                //     console.log("unassignedUsers is falsy");
+                // } else {
+                //     console.log("unassignedUsers is truthy");
+                //     console.log(unassignedUsers)
+                // }
             })
             .catch((error) => {
                 console.error("Error fetching MyCompany data:", error);
             });
     }, []);
+
 
     function handleAcceptUser(id) {
         setErrors([]);
@@ -36,34 +42,7 @@ function CompanyQueue({ user, setMyCompany }) {
             .then((r) => {
                 if (r.ok) {
                     r.json().then((userResponse) => {
-                        // remove user from unassignedusers list
-                        // setUnassignedUsers((prevMyCompany) => ({
-                        //     ...prevMyCompany,
-                        //     users: prevMyCompany.filter((user) => user.id !== id),
-                        // }));
                         setUnassignedUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
-
-                        // add user to companylist
-                        // setMyCompany((prevCompanyUsers) => [...prevCompanyUsers, userResponse])
-                        // setMyCompany((prevMyCompany) => ({
-                        //     ...prevMyCompany,
-                        //     users: [...prevMyCompany.users, userResponse],
-                        // }));
-
-                        // Add user to MyCompany list
-
-                        //     setMyCompany((prevMyCompany) => {
-
-                        //         console.log(prevMyCompany);
-                        //         return [...prevMyCompany, userResponse]);
-
-                        // }
-                        // setMyCompany((prevMyCompany) => {
-                        //     // console.log(...prevMyCompany.users, userResponse);
-                        //     // console.log(prevMyCompany);
-                        //     return [[...prevMyCompany.users, userResponse]];
-                        // });
-
                         setMyCompany((prevMyCompany) => ({
                             ...prevMyCompany,
                             users: [...prevMyCompany.users, userResponse]
@@ -83,8 +62,8 @@ function CompanyQueue({ user, setMyCompany }) {
     return (
         <div>
             <h2>Requests to Join</h2>
-            {!unassignedUsers ? (
-                <p>Loading...</p>
+            {unassignedUsers.length === 0 ? (
+                <p>No new requests to join</p>
             ) : (
                 <table>
                     <thead>
@@ -111,7 +90,8 @@ function CompanyQueue({ user, setMyCompany }) {
                             ))}
                     </tbody>
                 </table>
-            )}
+            )
+            }
         </div>
     );
 }

@@ -20,17 +20,11 @@ function CompanySettings(props) {
     }, []);
 
 
-
-
-
-
-
-
     return (
         <div>
             {user.company.id === 1 ? (
                 <Wrapper>
-                    Welcome {user.username}! Please request to join a company from the directory.
+                    Welcome {user.fname}! Please request to join a company from the directory.
                     <CompanyDirectory user={user} />
                 </Wrapper>
             ) : user.admin === false ? (

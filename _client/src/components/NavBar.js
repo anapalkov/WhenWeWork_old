@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Button } from "../styles";
@@ -45,8 +45,14 @@ function NavBar({ user, setUser }) {
         <StyledButton as={Link} to="/settings" active={location.pathname === "/settings"}>
           User Settings
         </StyledButton>
+        <StyledButton as={Link} to="/bigcalendar" active={location.pathname === "/bigcalendar"}>
+          Company Shifts
+        </StyledButton>
         <StyledButton as={Link} to="/companysettings" active={location.pathname === "/companysettings"}>
           Company
+        </StyledButton>
+        <StyledButton as={Link} to="/createshift" active={location.pathname === "/createshift"}>
+          Create Shift
         </StyledButton>
       </Nav2>
       {/* <WelcomeMessage>
