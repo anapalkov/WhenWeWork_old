@@ -3,15 +3,30 @@
 Rails.application.routes.draw do
   # get "/shifts", to: "shifts#index"
   # get '/companies', to: 'companies#index'
-  resources :shifts, only: %i[index create show update]
+
   resources :companies, only: %i[index create show update]
   get "/companies", to: "companies#index"
   get "/mycompany", to: "companies#show"
   get "/unassignedusers", to: "companies#unassigned"
+  # get "/shifts", to: "shifts#index"
+  # put "/shifts", to: "shifts#update"
+
+  #SHIFTS
+  # resources :shifts, only: %i[index create show update]
+  # post "/createshift", to: "shifts#create"
+
+  resources :shifts, only: %i[index create show] do
+    member do
+      patch :update_pickup
+      patch :update_offer
+      patch :update_admin_change
+      # Add more custom update routes as needed
+    end
+  end
 
   namespace :api do
-    # resources :recipes, only: %i[index create]
     post "/signup", to: "users#create"
+
     put "/signup/:id", to: "users#update"
     put "/setcompany/:id", to: "users#setcompany"
     put "/accepttocompany/:id", to: "users#accepttocompany"

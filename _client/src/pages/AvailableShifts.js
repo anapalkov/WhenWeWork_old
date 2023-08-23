@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Box, Button } from "../styles";
+import { Box, Button, FormField } from "../styles";
 // import { useParams } from "react-router-dom";
 
 // import {DateTimePickerComponent} from '@syncfusion/ej2-react-calendars'
@@ -10,24 +10,14 @@ import DatePicker from 'react-datepicker'
 // import 'react-datepicker/dist/react-datepicker.css'
 
 
-function AvailableShifts({ user }) {
+function AvailableShifts({ user, MyCompany, setMyCompany }) {
+    // console.log("USER: ")
+    // console.log(user)
     const [selectedDate, setSelectedDate] = useState(null)
-    const [filteredShifts, setFilteredShifts] = useState([])
-    // FETCH ALL MY SHIFTS and SORT
-    const [allAvailableShifts, setAllAvailableShifts] = useState([]);
-    useEffect(() => {
-        fetch(`/companies/${user.company.id}`)
-            .then(r => r.json())
-            .then(json => {
-                console.log(user.company_id)
-                console.log(json.shifts)
-                const sortedShifts = json.shifts.sort((a, b) => { return new Date(a.end) - new Date(b.end) })
 
-                setAllAvailableShifts(sortedShifts.filter((x) => x.trading === true))
-                setFilteredShifts(sortedShifts.filter((x) => x.trading === true))
-            }
-            );
-    }, []);
+    // extract and sort shifts from MyCompany that are currently being traded
+    const allAvailableShifts = MyCompany.users.map(user => user.shifts).flat().sort((a, b) => { return new Date(a.end) - new Date(b.end) }).filter((x) => x.trading === true)
+    const [filteredShifts, setFilteredShifts] = useState(allAvailableShifts)
 
     // TIME DISPLAY IN CORRECT FORMAT
     function convertTime(x) {
@@ -49,28 +39,51 @@ function AvailableShifts({ user }) {
     const handleShiftTrade = (e, shift) => {
         e.preventDefault();
         console.log(shift)
-        fetch(`/shifts/${shift.id}`, {
-            method: "PUT",
+        fetch(`/shifts/${shift.id}/update_pickup`, {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
+                user_id: user.id,
                 trading: !shift.trading,
             })
         }).then(res => res.json())
             .then(json => {
-                // Find the index of the object with id equal to x
-                const index = filteredShifts.findIndex(obj => obj.id === shift.id);
-                // Create a new object that is a copy of the original object at the index, but with trading set to false
-                const updatedObj = { ...filteredShifts[index], trading: !filteredShifts[index].trading };
-                // Create a new array that replaces the original object at the index with the updated object
-                const updatedData = [
-                    ...filteredShifts.slice(0, index),
-                    updatedObj,
-                    ...filteredShifts.slice(index + 1),
-                ];
-                setFilteredShifts(updatedData)
-            })
+                // console.log("UPDATED SHIFT")
+                // console.log(json)
+                if (json.error) {
+                    console.error("Error during shift trade:", json.error);
+                    // setErrors(json.error);
+
+                } else {
+                    //UPDATE MY COMPANY
+                    const updatedMyCompany = { ...MyCompany };
+                    // Find the old shift in MyCompany users and remove it
+                    updatedMyCompany.users.forEach((employee) => {
+                        employee.shifts = employee.shifts.filter((s) => s.id !== json.id);
+                    });
+
+                    // Find the user in MyCompany and add the updated shift
+                    // updatedMyCompany.users.forEach((employee) => {
+                    //     if (employee.id === user.id) {
+                    //         user.shifts.push(json);
+                    //     }
+                    // });
+                    updatedMyCompany.users[user.id - 1].shifts.push(json);
+                    console.log(updatedMyCompany.users[user.id - 1].username)
+
+                    console.log(updatedMyCompany)
+                    setMyCompany(updatedMyCompany);
+
+                    //UPDATE MY SHIFTS
+                    const updatedShifts = filteredShifts.filter((s) => s.id !== shift.id);
+                    setFilteredShifts(updatedShifts);
+                }
+            }).catch(error => {
+                console.error("Error during shift trade:", error);
+            });
+
     }
 
     return (

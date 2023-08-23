@@ -29,7 +29,8 @@ const localizer = dateFnsLocalizer({
 //     }
 // ];
 
-function OnSelectEvent() {
+
+function OnSelectallShift() {
     const clickRef = useRef(null)
 
     useEffect(() => {
@@ -43,7 +44,7 @@ function OnSelectEvent() {
         }
     }, [])
 
-    const onSelectEvent = useCallback((calEvent) => {
+    const onSelectallShift = useCallback((calEvent) => {
         /**
          * Here we are waiting 250 milliseconds (use what you want) prior to firing
          * our method. Why? Because both 'click' and 'doubleClick'
@@ -68,23 +69,19 @@ function OnSelectEvent() {
     }, [])
 }
 
-function BigCalendar({ user }) {
+function BigCalendar({ user, MyCompany, setMyCompany }) {
 
-    const [allEvents, setAllEvents] = useState([]);
-    // const [allMyShifts, setAllMyShifts] = useState([]);
-    useEffect(() => {
-        fetch("/api/me")
-            .then(r => r.json())
-            .then(json => {
-                setAllEvents(json.shifts.sort((a, b) => { return new Date(a.end) - new Date(b.end) }))
-            }
-            );
-    }, []);
+    const [allShifts, setAllShifts] = useState([...MyCompany.users.reduce((acc, user) => acc.concat(user.shifts), [])]);
+    console.log("ALL Shifts")
+    console.log(allShifts)
 
+    const eventStyleGetter = (event, start, end, isSelected) => {
+        const style = {
+            backgroundColor: event.user_id === user.id ? 'green' : 'gray', // Set different colors based on user_id
+        };
+        return { style };
+    };
 
-    // const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
-    console.log("ALL EVENTS")
-    console.log(allEvents)
 
     // function handleAddEvent() {
     //     for (let i = 0; i < allEvents.length; i++) {
@@ -120,11 +117,12 @@ function BigCalendar({ user }) {
             </div> */}
             <Calendar
                 localizer={localizer}
-                events={allEvents}
+                events={allShifts}
                 startAccessor="start"
                 endAccessor="end"
                 style={{ height: 500, margin: "50px" }}
-            // onSelectEvent={onSelectEvent}
+                // onSelectEvent={onSelectEvent}
+                eventPropGetter={eventStyleGetter} // Apply custom event styles
             />
         </BigCalendarWrapper>
     );

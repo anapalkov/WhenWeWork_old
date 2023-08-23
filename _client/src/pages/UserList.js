@@ -5,21 +5,13 @@ import styled from "styled-components";
 // import "react-table/react-table.css";
 
 function UserList({ user, MyCompany, setMyCompany }) {
-    // const [MyCompany, setMyCompany] = useState([]);
+
+    console.log("USERLIST MY COMPANY")
+    console.log(MyCompany)
+
+
     const [errors, setErrors] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-
-    // useEffect(() => {
-    //     fetch("/mycompany")
-    //         .then((r) => r.json())
-    //         .then((data) => {
-    //             setMyCompany(data);
-    //             console.log(data); // Logging the data received from the API call
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error fetching MyCompany data:", error);
-    //         });
-    // }, []);
 
 
     function handleRemoveUser(id) {

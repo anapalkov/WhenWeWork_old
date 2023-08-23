@@ -27,6 +27,9 @@ function NavBar({ user, setUser }) {
           <Button as={Link} to="/notifications" active={location.pathname === "/notifications"}>
             🔔
           </Button>
+          <Button as={Link} to="/settings" active={location.pathname === "/settings"}>
+            User Settings
+          </Button>
           <Button as={Link} to="/" active={location.pathname === "/"} onClick={handleLogoutClick}>
             Logout
           </Button>
@@ -42,11 +45,11 @@ function NavBar({ user, setUser }) {
         <StyledButton as={Link} to="/" active={location.pathname === "/"}>
           My Shifts
         </StyledButton>
-        <StyledButton as={Link} to="/settings" active={location.pathname === "/settings"}>
+        {/* <StyledButton as={Link} to="/settings" active={location.pathname === "/settings"}>
           User Settings
-        </StyledButton>
+        </StyledButton> */}
         <StyledButton as={Link} to="/bigcalendar" active={location.pathname === "/bigcalendar"}>
-          Company Shifts
+          All Shifts
         </StyledButton>
         <StyledButton as={Link} to="/companysettings" active={location.pathname === "/companysettings"}>
           Company

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class CompaniesController < ApplicationController # rubocop:todo Style/Documentation
+  # before_action :set_company, only: [:show]
   def index
     render json: Company.all
   end
@@ -31,15 +32,6 @@ class CompaniesController < ApplicationController # rubocop:todo Style/Documenta
     params.require(:company).permit(:company_id, :name, :secretkey)
   end
 
-  # def unassigned
-  #   company = Company.first
-  #   if company
-  #     render json: company
-  #   else
-  #     render json: { error: "No companies found" }
-  #   end
-  # end
-
   def unassigned
     company = Company.first
 
@@ -51,10 +43,24 @@ class CompaniesController < ApplicationController # rubocop:todo Style/Documenta
     end
   end
 
+  # def show
+  #   company = @current_user.company
+
+  #   if company
+  #     render json: company
+  #   else
+  #     # Handle the case when the company does not exist or doesn't belong to the current user
+  #     render json: { error: "Company not found or doesn't belong to the current user" }, status: :not_found
+  #   end
+  # end
+
   def show
-    # Use the @current_user to find the associated company
     company = @current_user.company
+
     if company
+      # Eager load the shifts of the users associated with the company
+      # company_with_associations = Company.includes(users: :shifts).find(company.id)
+      # render json: company_with_associations
       render json: company
     else
       # Handle the case when the company does not exist or doesn't belong to the current user
@@ -62,3 +68,19 @@ class CompaniesController < ApplicationController # rubocop:todo Style/Documenta
     end
   end
 end
+
+#   def show
+#     if @company
+#       render json: @company
+#       # , include: ["users.shifts"]
+#     else
+#       render json: { error: "Company not found or doesn't belong to the current user" }, status: :not_found
+#     end
+#   end
+
+#   private
+
+#   def set_company
+#     @company = @current_user.company
+#   end
+# end

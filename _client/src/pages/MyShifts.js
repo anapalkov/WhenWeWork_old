@@ -10,19 +10,15 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
 
-function MyShifts({ user }) {
+function MyShifts({ user, setErrors, MyCompany, setMyCompany }) {
+    console.log(MyCompany)
+    //extract users shifts from company
+    //const userShifts = MyCompany.users[1].shifts
+    const userShifts = MyCompany.users.find(employee => employee.id === user.id)?.shifts || [];
+    //sort shifts from user
+    const allMyShifts = userShifts.sort((a, b) => { return new Date(a.end) - new Date(b.end) });
     const [selectedDate, setSelectedDate] = useState(null)
-    const [filteredShifts, setFilteredShifts] = useState([])
-    const [allMyShifts, setAllMyShifts] = useState([]);
-    useEffect(() => {
-        fetch("/api/me")
-            .then(r => r.json())
-            .then(json => {
-                setAllMyShifts(json.shifts.sort((a, b) => { return new Date(a.end) - new Date(b.end) }))
-                setFilteredShifts(json.shifts.sort((a, b) => { return new Date(a.end) - new Date(b.end) }))
-            }
-            );
-    }, []);
+    const [filteredShifts, setFilteredShifts] = useState(allMyShifts)
 
     // TIME DISPLAY IN CORRECT FORMAT
     function convertTime(x) {
@@ -46,29 +42,50 @@ function MyShifts({ user }) {
     // HANDLE TRADE SHIFT
     const handleShiftTrade = (e, shift) => {
         e.preventDefault();
-        console.log(shift)
-        //I don't like this because this gives user access to all shifts, not just their own
-        fetch(`/shifts/${shift.id}`, {
-            method: "PUT",
+        fetch(`/shifts/${shift.id}/update_offer`, {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
                 trading: !shift.trading,
-            })
-        }).then(res => res.json())
-            .then(json => {
-                // Find the index of the object with id equal to x
-                const index = filteredShifts.findIndex(obj => obj.id === shift.id);
-                // Create a new object that is a copy of the original object at the index, but with trading set to false
-                const updatedObj = { ...filteredShifts[index], trading: !filteredShifts[index].trading };
-                // Create a new array that replaces the original object at the index with the updated object
-                const updatedData = [
-                    ...filteredShifts.slice(0, index),
-                    updatedObj,
-                    ...filteredShifts.slice(index + 1),
-                ];
-                setFilteredShifts(updatedData)
+            }),
+        })
+            .then((res) => res.json())
+            .then((json) => {
+                if (json.error) {
+                    console.error("Error during shift trade:", json.error);
+                    setErrors([json.error]);
+                } else {
+                    // UPDATE FILTERED SHIFTS
+                    const index = filteredShifts.findIndex((obj) => obj.id === shift.id);
+                    const updatedObj = { ...filteredShifts[index], trading: !filteredShifts[index].trading };
+                    const updatedData = [
+                        ...filteredShifts.slice(0, index),
+                        updatedObj,
+                        ...filteredShifts.slice(index + 1),
+                    ];
+                    setFilteredShifts(updatedData);
+
+
+                    // IDEALLY UPDATE MY COMPANY AS WELL
+                    // Make a copy of MyCompany
+                    const updatedMyCompany = { ...MyCompany };
+
+                    // Find the user and shift in updatedMyCompany
+                    const userToUpdate = updatedMyCompany.users.find(user => user.id === user.id);
+                    const shiftToUpdate = userToUpdate.shifts.find(shift => shift.id === json.id);
+
+                    // Update the trading value
+                    shiftToUpdate.trading = !shiftToUpdate.trading;
+
+                    // Update MyCompany state
+                    setMyCompany(updatedMyCompany);
+                    // const updatedMyCompany = { ...MyCompany };
+                    // updatedMyCompany.users[user.id].shifts[json.id].trading = !updatedMyCompany.users[user.id].shifts[json.id].trading
+                    // setMyCompany (updatedMyCompany)
+
+                }
             })
     }
 

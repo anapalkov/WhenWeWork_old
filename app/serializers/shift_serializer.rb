@@ -2,5 +2,5 @@
 
 class ShiftSerializer < ActiveModel::Serializer # rubocop:todo Style/Documentation
   attributes :id, :title, :location, :start, :end, :trading
-  has_one :user
+  belongs_to :user
 end

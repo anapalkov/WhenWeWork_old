@@ -11,17 +11,29 @@ import CreateShift from "../pages/CreateShift";
 import UserSettings from "../pages/UserSettings";
 import CompanySettings from "../pages/CompanySettings";
 import CompanyShifts from "../pages/CompanyShifts"
+import { Error, FormField } from "../styles";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [MyCompany, setMyCompany] = useState([]);
+  const [errors, setErrors] = useState([]);
+
+  useEffect(() => {
+    fetch("/mycompany")
+      .then((r) => r.json())
+      .then((data) => {
+        setMyCompany(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching MyCompany data:", error);
+      });
+  }, []);
 
   useEffect(() => {
     // auto-login
     fetch("/api/me").then((r) => {
       if (r.ok) {
         r.json().then((user) => {
-          // console.log("Signing In:")
-          // console.log(user)
           setUser(user)
         }
         );
@@ -31,44 +43,50 @@ function App() {
   }, []);
 
   //if no user logged in, return login/signup page instead
-  if (!user) return <Login onLogin={setUser} />;
+  if (!user) return (
+    <>
+      <Login onLogin={setUser} setErrors={setErrors} />;
+      <FormField>
+        {errors.map((err) => (
+          <Error key={err}>{err}</Error>
+        ))}
+      </FormField>
+    </>)
 
   //otherwise return page dependent on switch
   return (
     <>
+      <FormField>
+        {errors.map((err) => (
+          <Error key={err}>{err}</Error>
+        ))}
+      </FormField>
       <NavBar user={user} setUser={setUser} />
       <main>
         <Switch>
           <Route path="/settings">
-            <UserSettings user={user} setUser={setUser} />
+            <UserSettings user={user} setUser={setUser} MyCompany={MyCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
           </Route>
-          {/* <Route path="/companies">
-            <CompanyDirectory user={user} />
-          </Route> */}
           <Route path="/companysettings">
-            <CompanySettings user={user} />
+            <CompanySettings user={user} MyCompany={MyCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
           </Route>
           <Route path="/createshift">
-            <CreateShift user={user} />
+            <CreateShift user={user} MyCompany={MyCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
           </Route>
           <Route path="/open">
-            <AvailableShifts user={user} />
+            <AvailableShifts user={user} MyCompany={MyCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
           </Route>
-          {/* <Route path="/test">
-            <Test user={user} />
-          </Route> */}
           <Route path="/bigcalendar">
-            <BigCalendar user={user} />
+            <BigCalendar user={user} MyCompany={MyCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
           </Route>
-          <Route path="/companyshifts">
+          {/* <Route path="/companyshifts">
             <CompanyShifts user={user} />
-          </Route>
+          </Route> */}
           <Route path="/">
-            <MyShifts user={user} />
+            <MyShifts user={user} MyCompany={MyCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
           </Route>
         </Switch>
       </main>
-
     </>
   );
 }

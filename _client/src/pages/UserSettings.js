@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 
 
-function UserSettings({ user, setUser }) {
+function UserSettings({ user, setUser, MyCompany, setMyCompany }) {
     // const  = props;
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
@@ -12,8 +12,6 @@ function UserSettings({ user, setUser }) {
     const [lname, setLname] = useState(user.lname);
     const [errors, setErrors] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    // const [company, setCompany] = useState("")
-
 
     function handleSubmit(e) {
 
@@ -43,6 +41,14 @@ function UserSettings({ user, setUser }) {
             .then((r) => {
                 setIsLoading(false);
                 if (r.ok) {
+                    const updatedCompany = { ...MyCompany };
+                    const userIndex = updatedCompany.users.findIndex(u => u.id === user.id);
+
+                    if (userIndex !== -1) {
+                        updatedCompany.users[userIndex] = updatedUser;
+                        setMyCompany(updatedCompany); // Update MyCompany state
+                    }
+
                     setUser(updatedUser);
                     // r.json().then((user) => onLogin(user));
                 } else {
@@ -64,26 +70,6 @@ function UserSettings({ user, setUser }) {
                         disabled // Add the disabled attribute
                     />
                 </FormField>
-                {/* <FormField>
-                    <Label htmlFor="password">New Password</Label>
-                    <Input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        autoComplete="current-password"
-                    />
-                </FormField>
-                <FormField>
-                    <Label htmlFor="password">New Password Confirmation</Label>
-                    <Input
-                        type="password"
-                        id="password_confirmation"
-                        value={passwordConfirmation}
-                        onChange={(e) => setPasswordConfirmation(e.target.value)}
-                        autoComplete="current-password"
-                    />
-                </FormField> */}
                 <FormField>
                     <Label htmlFor="password">New Password</Label>
                     <Input
