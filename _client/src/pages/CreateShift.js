@@ -12,6 +12,7 @@ function CreateShift({ user, MyCompany, setMyCompany }) {
     const [location, setLocation] = useState("");
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+    const [tradingStatus, setTradingStatus] = useState(false);
 
     function handleSubmit(e) {
         e.preventDefault();

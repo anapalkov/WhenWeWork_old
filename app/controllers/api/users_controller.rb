@@ -15,6 +15,10 @@ module Api
       end
     end
 
+    def create_empty_user(username, company)
+      User.create(username: username, company: company, password: SecureRandom.hex(10), password_confirmation: SecureRandom.hex(10))
+    end
+
     def update
       user = @current_user
       # user = User.find(params[:id])

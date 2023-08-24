@@ -3,14 +3,21 @@ import CompanyDirectory from "./CompanyDirectory";
 import CompanyQueue from "./CompanyQueue";
 import UserList from "./UserList";
 import { useState, useEffect } from "react";
+import CompanyCreation from "./CompanyCreation";
 
 function CompanySettings({ user, MyCompany, setMyCompany }) {
 
     return (
         <div>
-            {user.company.id === 1 ? (
+            {user.company.id === 1 && user.admin ? (
                 <Wrapper>
-                    Welcome {user.fname}! Please request to join a company from the directory or create your own.
+                    Welcome {user.username}! Please create a company.
+                    <CompanyCreation user={user} />
+
+                </Wrapper>
+            ) : user.company.id === 1 && !user.admin ? (
+                <Wrapper>
+                    Welcome {user.username}! Please request to join a company.
                     <CompanyDirectory user={user} />
                 </Wrapper>
             ) : user.admin === false ? (

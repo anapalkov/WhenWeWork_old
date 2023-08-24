@@ -41,6 +41,7 @@ function MyShifts({ user, setErrors, MyCompany, setMyCompany }) {
 
     // HANDLE TRADE SHIFT
     const handleShiftTrade = (e, shift) => {
+
         e.preventDefault();
         fetch(`/shifts/${shift.id}/update_offer`, {
             method: "PATCH",
@@ -57,9 +58,11 @@ function MyShifts({ user, setErrors, MyCompany, setMyCompany }) {
                     console.error("Error during shift trade:", json.error);
                     setErrors([json.error]);
                 } else {
+
                     // UPDATE FILTERED SHIFTS
                     const index = filteredShifts.findIndex((obj) => obj.id === shift.id);
                     const updatedObj = { ...filteredShifts[index], trading: !filteredShifts[index].trading };
+
                     const updatedData = [
                         ...filteredShifts.slice(0, index),
                         updatedObj,
@@ -68,23 +71,17 @@ function MyShifts({ user, setErrors, MyCompany, setMyCompany }) {
                     setFilteredShifts(updatedData);
 
 
-                    // IDEALLY UPDATE MY COMPANY AS WELL
+                    //UPDATE MY COMPANY AS WELL
                     // Make a copy of MyCompany
                     const updatedMyCompany = { ...MyCompany };
-
                     // Find the user and shift in updatedMyCompany
-                    const userToUpdate = updatedMyCompany.users.find(user => user.id === user.id);
+                    const userToUpdate = updatedMyCompany.users.find(employee => employee.id === user.id);
                     const shiftToUpdate = userToUpdate.shifts.find(shift => shift.id === json.id);
-
                     // Update the trading value
                     shiftToUpdate.trading = !shiftToUpdate.trading;
 
                     // Update MyCompany state
                     setMyCompany(updatedMyCompany);
-                    // const updatedMyCompany = { ...MyCompany };
-                    // updatedMyCompany.users[user.id].shifts[json.id].trading = !updatedMyCompany.users[user.id].shifts[json.id].trading
-                    // setMyCompany (updatedMyCompany)
-
                 }
             })
     }

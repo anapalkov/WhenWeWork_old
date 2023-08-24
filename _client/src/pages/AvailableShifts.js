@@ -64,16 +64,19 @@ function AvailableShifts({ user, MyCompany, setMyCompany }) {
                         employee.shifts = employee.shifts.filter((s) => s.id !== json.id);
                     });
 
-                    // Find the user in MyCompany and add the updated shift
-                    // updatedMyCompany.users.forEach((employee) => {
-                    //     if (employee.id === user.id) {
-                    //         user.shifts.push(json);
-                    //     }
-                    // });
-                    updatedMyCompany.users[user.id - 1].shifts.push(json);
-                    console.log(updatedMyCompany.users[user.id - 1].username)
+                    //Find the user in MyCompany and add the updated shift
+                    updatedMyCompany.users.forEach((employee) => {
+                        if (employee.id === user.id) {
+                            user.shifts.push(json);
+                        }
+                    });
 
-                    console.log(updatedMyCompany)
+                    // Find the user in MyCompany and add the updated shift. CHANGE THIS TO FIND BY USER ID
+                    //updatedMyCompany.users[user.id - 1].shifts.push(json);
+
+                    //console.log(updatedMyCompany.users[user.id - 1].username)
+                    //console.log(updatedMyCompany)
+
                     setMyCompany(updatedMyCompany);
 
                     //UPDATE MY SHIFTS
