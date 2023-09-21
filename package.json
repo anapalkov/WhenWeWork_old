@@ -11,8 +11,11 @@
     "heroku-postbuild": "npm install --prefix _client && npm run build --prefix _client"
   },
   "dependencies": {
+    "@syncfusion/ej2-react-schedule": "^20.4.53",
     "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "@syncfusion/ej2-react-schedule": "^20.4.53"
+    "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }
