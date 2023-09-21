@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 
 
-function UserSettings({ user, setUser, MyCompany, setMyCompany }) {
+function UserSettings({ user, setUser, myCompany, setMyCompany }) {
     // const  = props;
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
@@ -25,7 +25,7 @@ function UserSettings({ user, setUser, MyCompany, setMyCompany }) {
             lname: lname
         };
 
-        fetch(`/api/signup/${user.id}`, {
+        fetch(`/signup/${user.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -41,7 +41,7 @@ function UserSettings({ user, setUser, MyCompany, setMyCompany }) {
             .then((r) => {
                 setIsLoading(false);
                 if (r.ok) {
-                    const updatedCompany = { ...MyCompany };
+                    const updatedCompany = { ...myCompany };
                     const userIndex = updatedCompany.users.findIndex(u => u.id === user.id);
 
                     if (userIndex !== -1) {

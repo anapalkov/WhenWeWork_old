@@ -10,13 +10,15 @@ import DatePicker from 'react-datepicker'
 // import 'react-datepicker/dist/react-datepicker.css'
 
 
-function AvailableShifts({ user, MyCompany, setMyCompany }) {
+function AvailableShifts({ user, myCompany, setMyCompany }) {
     // console.log("USER: ")
     // console.log(user)
     const [selectedDate, setSelectedDate] = useState(null)
+    const [companyShifts, setCompanyShifts] = useState([]);
+    console.log(myCompany.shifts)
 
-    // extract and sort shifts from MyCompany that are currently being traded
-    const allAvailableShifts = MyCompany.users.map(user => user.shifts).flat().sort((a, b) => { return new Date(a.end) - new Date(b.end) }).filter((x) => x.trading === true)
+    // extract and sort shifts from myCompany that are currently being traded
+    const allAvailableShifts = myCompany.users.map(user => user.shifts).flat().sort((a, b) => { return new Date(a.end) - new Date(b.end) }).filter((x) => x.trading === true)
     const [filteredShifts, setFilteredShifts] = useState(allAvailableShifts)
 
     // TIME DISPLAY IN CORRECT FORMAT
@@ -38,7 +40,6 @@ function AvailableShifts({ user, MyCompany, setMyCompany }) {
     // HANDLE TRADE SHIFT
     const handleShiftTrade = (e, shift) => {
         e.preventDefault();
-        console.log(shift)
         fetch(`/shifts/${shift.id}/update_pickup`, {
             method: "PATCH",
             headers: {
@@ -58,20 +59,20 @@ function AvailableShifts({ user, MyCompany, setMyCompany }) {
 
                 } else {
                     //UPDATE MY COMPANY
-                    const updatedMyCompany = { ...MyCompany };
-                    // Find the old shift in MyCompany users and remove it
+                    const updatedMyCompany = { ...myCompany };
+                    // Find the old shift in myCompany users and remove it
                     updatedMyCompany.users.forEach((employee) => {
                         employee.shifts = employee.shifts.filter((s) => s.id !== json.id);
                     });
 
-                    //Find the user in MyCompany and add the updated shift
+                    //Find the user in myCompany and add the updated shift
                     updatedMyCompany.users.forEach((employee) => {
                         if (employee.id === user.id) {
                             user.shifts.push(json);
                         }
                     });
 
-                    // Find the user in MyCompany and add the updated shift. CHANGE THIS TO FIND BY USER ID
+                    // Find the user in myCompany and add the updated shift. CHANGE THIS TO FIND BY USER ID
                     //updatedMyCompany.users[user.id - 1].shifts.push(json);
 
                     //console.log(updatedMyCompany.users[user.id - 1].username)

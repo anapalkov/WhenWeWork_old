@@ -11,3 +11,12 @@
 .centered-content h2 {
 	margin-bottom: 16px;
 }
+
+.bold-text {
+	font-weight: bold;
+}
+
+body {
+	overflow-y: scroll;
+	/* Always show a scrollbar (even if content doesn't overflow) */
+}

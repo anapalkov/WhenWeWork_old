@@ -24,17 +24,18 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :api do
-    post "/signup", to: "users#create"
+  # namespace :api do
+  post "/signup", to: "users#create"
 
-    put "/signup/:id", to: "users#update"
-    put "/setcompany/:id", to: "users#setcompany"
-    put "/accepttocompany/:id", to: "users#accepttocompany"
-    # delete "/signup/:id", to: "users#delete"
-    get "/me", to: "users#show"
-    post "/login", to: "sessions#create"
-    delete "/logout", to: "sessions#destroy"
-  end
+  put "/signup/:id", to: "users#update"
+  put "/setcompany/:id", to: "users#setcompany"
+  put "/accepttocompany/:id", to: "users#accepttocompany"
+  # delete "/signup/:id", to: "users#delete"
+  get "/me", to: "users#show"
+  post "/login", to: "sessions#create"
+  delete "/logout", to: "sessions#destroy"
+  # end
+
   # all other routes will be load our React application
   # this route definition matches:
   # - *path: all paths not matched by one of the routes defined above

@@ -4,7 +4,7 @@ import LoginForm from "../components/LoginForm";
 import SignUpForm from "../components/SignUpForm";
 import { Button } from "../styles";
 
-function Login({ onLogin, errors, setErrors }) {
+function Login({ onLogin, errors, setErrors, setMyCompany }) {
   const [showLogin, setShowLogin] = useState(true);
 
   return (
@@ -12,7 +12,7 @@ function Login({ onLogin, errors, setErrors }) {
       <Logo>WhenWeWork</Logo>
       {showLogin ? (
         <>
-          <LoginForm onLogin={onLogin} errors={errors} setErrors={setErrors} />
+          <LoginForm onLogin={onLogin} errors={errors} setErrors={setErrors} setMyCompany={setMyCompany} />
           <Divider />
           <p>
             Don't have an account? &nbsp;
@@ -23,7 +23,7 @@ function Login({ onLogin, errors, setErrors }) {
         </>
       ) : (
         <>
-          <SignUpForm onLogin={onLogin} errors={errors} setErrors={setErrors} />
+          <SignUpForm onLogin={onLogin} errors={errors} setErrors={setErrors} setMyCompany={setMyCompany} />
           <Divider />
           <p>
             Already have an account? &nbsp;

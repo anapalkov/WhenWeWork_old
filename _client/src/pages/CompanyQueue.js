@@ -29,7 +29,7 @@ function CompanyQueue({ user, setMyCompany }) {
 
     function handleAcceptUser(id) {
         setErrors([]);
-        fetch(`/api/accepttocompany/${id}`, {
+        fetch(`/accepttocompany/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

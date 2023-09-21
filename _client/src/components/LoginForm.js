@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { Button, Input, FormField, Label } from "../styles";
 
-function LoginForm({ onLogin, setErrors }) {
+function LoginForm({ onLogin, setErrors, setMyCompany }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   // const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   function handleSubmit(e) {
+    // HANDLE LOGIN, CREATE SESSION AND SET USER
     e.preventDefault();
     setIsLoading(true);
-    fetch("/api/login", {
+    fetch("/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,11 +20,39 @@ function LoginForm({ onLogin, setErrors }) {
     }).then((res) => {
       setIsLoading(false);
       if (res.ok) {
-        res.json().then((user) => onLogin(user));
+        res.json().then((user) => {
+          console.log(user)
+
+
+
+          fetch("/mycompany")
+            .then((r) => r.json())
+            .then((data) => {
+              console.log("LOGIN LOADING IS DONE")
+              console.log(data)
+              setMyCompany(data);
+              onLogin(user);
+            })
+            .catch((error) => {
+              console.error("Error fetching MyCompany data:", error);
+              console.log("LOADING FAILED")
+            });
+
+
+
+        })
+
       } else {
         res.json().then((err) => setErrors(err.errors));
       }
     });
+
+
+
+
+
+
+
   }
 
   return (

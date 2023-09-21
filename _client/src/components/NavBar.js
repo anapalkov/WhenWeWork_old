@@ -5,7 +5,7 @@ import { Button } from "../styles";
 
 function NavBar({ user, setUser }) {
   function handleLogoutClick() {
-    fetch("/api/logout", { method: "DELETE" }).then((r) => {
+    fetch("/logout", { method: "DELETE" }).then((r) => {
       if (r.ok) {
         setUser(null);
       }
@@ -15,7 +15,7 @@ function NavBar({ user, setUser }) {
   const location = useLocation();
 
   return (
-    <OuterWrapper>
+    <OuterWrapper isAdmin={user.admin}>
       <Wrapper>
         <Logo>
           <Link to="/">WhenWeWork</Link>
@@ -28,7 +28,7 @@ function NavBar({ user, setUser }) {
             🔔
           </Button>
           <Button as={Link} to="/settings" active={location.pathname === "/settings"}>
-            User Settings
+            ⚙️
           </Button>
           <Button as={Link} to="/" active={location.pathname === "/"} onClick={handleLogoutClick}>
             Logout
@@ -40,22 +40,22 @@ function NavBar({ user, setUser }) {
           Companies
         </StyledButton> */}
         <StyledButton as={Link} to="/open" active={location.pathname === "/open"}>
-          Available Shifts
+          AVAILABLE
         </StyledButton>
         <StyledButton as={Link} to="/" active={location.pathname === "/"}>
-          My Shifts
+          UPCOMING
         </StyledButton>
         {/* <StyledButton as={Link} to="/settings" active={location.pathname === "/settings"}>
           User Settings
         </StyledButton> */}
         <StyledButton as={Link} to="/bigcalendar" active={location.pathname === "/bigcalendar"}>
-          All Shifts
+          ALL
         </StyledButton>
         <StyledButton as={Link} to="/companysettings" active={location.pathname === "/companysettings"}>
-          Company
+          COMPANY
         </StyledButton>
         <StyledButton as={Link} to="/createshift" active={location.pathname === "/createshift"}>
-          Create Shift
+          CREATE
         </StyledButton>
       </Nav2>
       {/* <WelcomeMessage>
@@ -70,10 +70,10 @@ const OuterWrapper = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  background-color: gray;
+  background-color: ${props => props.isAdmin ? "rgb(44, 70, 124)" : "gray"};
   border-bottom: 1px solid black;
   z-index: 1;
-  padding-bottom: 30px;
+  padding-bottom: 40px;
 `;
 
 const Wrapper = styled.header`
@@ -105,27 +105,37 @@ const Nav = styled.nav`
 
 const Nav2 = styled.nav`
   display: flex;
-  gap: 4px;
+  gap: 8px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  width: 80%; /* Ensure that the buttons span the entire width of the container */
 `;
 
 const StyledButton = styled(Button)`
+  flex: 1; /* Make all buttons take up equal space within the parent */
+  text-decoration: none;
+  border: 1px solid black; /* Add a thin black outline */
   background-color: ${(props) => (props.active ? "#444444" : "transparent")};
-  color: ${(props) => (props.active ? "white" : "black")};
-  transition: background-color 0.3s; /* Add a smooth transition on hover */
+  color: ${(props) => (props.active ? "white" : "white")};
+  display: flex; /* Use flexbox layout */
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.1s; /* Add a smooth transition on hover */
+  font-size: 16px; /* Adjust the font size as needed */
+  ${'' /* font-color: white; */}
 
-  &:hover {
-    background-color: ${(props) => (props.active ? "444444" : "#444444")};
-    /* Change the background color to green when the button is hovered */
-    /* You can adjust the "#dddddd" value to your desired hover color */
+  &: hover {
+    
+    background-color: ${(props) => (props.active ? "#444444" : "#444444")};
+    /* Change the background color to a slightly darker shade when the button is hovered */
+    /* You can adjust the color value to your desired hover color */
   }
 `;
 
 const WelcomeMessage = styled.div`
-  text-align: center;
-  padding-top: 30px;
+text - align: center;
+padding - top: 30px;
 `;
 
 export default NavBar;

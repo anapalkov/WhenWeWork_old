@@ -15,7 +15,7 @@ function CompanyDirectory({ user }) {
         const updatedUserData = {
             companyrequest: companyid
         };
-        fetch(`/api/signup/${user.id}`, {
+        fetch(`/signup/${user.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

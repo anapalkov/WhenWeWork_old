@@ -30,13 +30,13 @@ const ButtonBase = styled.button`
   cursor: pointer;
   font-size: 1rem;
   border: 1px solid transparent;
-  border-radius: 6px;
-  padding: 8px 16px;
+  border-radius: 3px;
+  padding: 4px 8px;
   text-decoration: none;
 `;
 
 const FillButton = styled(ButtonBase)`
-  background-color: var(--main);
+  background-color: rgba(255, 255, 255, 0.5); /* 50% transparent white background */
   color: var(--accent);
 
   &:hover {
@@ -45,7 +45,7 @@ const FillButton = styled(ButtonBase)`
 `;
 
 const OutlineButton = styled(ButtonBase)`
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.5); /* 50% transparent white background */
   color: var(--main);
   border: 2px solid var(--main);
 

@@ -10,11 +10,12 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
 
-function MyShifts({ user, setErrors, MyCompany, setMyCompany }) {
-    console.log(MyCompany)
+function MyShifts({ user, setErrors, myCompany, setMyCompany }) {
+    console.log("MYSHIFTS:")
+    console.log(myCompany)
     //extract users shifts from company
-    //const userShifts = MyCompany.users[1].shifts
-    const userShifts = MyCompany.users.find(employee => employee.id === user.id)?.shifts || [];
+    //const userShifts = myCompany.users[1].shifts
+    const userShifts = myCompany.users.find(employee => employee.id === user.id)?.shifts || [];
     //sort shifts from user
     const allMyShifts = userShifts.sort((a, b) => { return new Date(a.end) - new Date(b.end) });
     const [selectedDate, setSelectedDate] = useState(null)
@@ -41,7 +42,6 @@ function MyShifts({ user, setErrors, MyCompany, setMyCompany }) {
 
     // HANDLE TRADE SHIFT
     const handleShiftTrade = (e, shift) => {
-
         e.preventDefault();
         fetch(`/shifts/${shift.id}/update_offer`, {
             method: "PATCH",
@@ -72,20 +72,19 @@ function MyShifts({ user, setErrors, MyCompany, setMyCompany }) {
 
 
                     //UPDATE MY COMPANY AS WELL
-                    // Make a copy of MyCompany
-                    const updatedMyCompany = { ...MyCompany };
+                    // Make a copy of myCompany
+                    const updatedMyCompany = { ...myCompany };
                     // Find the user and shift in updatedMyCompany
                     const userToUpdate = updatedMyCompany.users.find(employee => employee.id === user.id);
                     const shiftToUpdate = userToUpdate.shifts.find(shift => shift.id === json.id);
                     // Update the trading value
                     shiftToUpdate.trading = !shiftToUpdate.trading;
 
-                    // Update MyCompany state
+                    // Update myCompany state
                     setMyCompany(updatedMyCompany);
                 }
             })
     }
-
 
     return (
         <Wrapper>
@@ -116,10 +115,6 @@ function MyShifts({ user, setErrors, MyCompany, setMyCompany }) {
                     <h2></h2>
                 </>
             )}
-
-
-
-
         </Wrapper>
     );
 }

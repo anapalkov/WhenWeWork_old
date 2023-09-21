@@ -3,11 +3,11 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function CreateShift({ user, MyCompany, setMyCompany }) {
+function CreateShift({ user, myCompany, setMyCompany }) {
     const [errors, setErrors] = useState([]);
     const [isLoading, setIsLoading] = useState([]);
 
-    const [selectedUser, setSelectedUser] = useState(MyCompany.users.length > 0 ? MyCompany.users[0].id : "");
+    const [selectedUser, setSelectedUser] = useState(myCompany.users.length > 0 ? myCompany.users[0].id : "");
     const [title, setTitle] = useState("");
     const [location, setLocation] = useState("");
     const [startDate, setStartDate] = useState(null);
@@ -40,9 +40,9 @@ function CreateShift({ user, MyCompany, setMyCompany }) {
                 if (response.ok) {
                     // Assuming the response contains the newly created shift data
                     response.json().then((newShift) => {
-                        // Assuming MyCompany and selectedUser are defined somewhere in your code
-                        // Update the MyCompany object with the new shift
-                        const updatedCompany = { ...MyCompany };
+                        // Assuming myCompany and selectedUser are defined somewhere in your code
+                        // Update the myCompany object with the new shift
+                        const updatedCompany = { ...myCompany };
                         console.log(updatedCompany.users[selectedUser - 1])
                         updatedCompany.users[selectedUser - 1].shifts.push(newShift);
 
@@ -53,7 +53,7 @@ function CreateShift({ user, MyCompany, setMyCompany }) {
 
 
                         // Clear input values after successful submission
-                        setSelectedUser(MyCompany.users.length > 0 ? MyCompany.users[0].id : "");
+                        setSelectedUser(myCompany.users.length > 0 ? myCompany.users[0].id : "");
                         setTitle("");
                         setLocation("");
                         setStartDate(null);
@@ -75,7 +75,7 @@ function CreateShift({ user, MyCompany, setMyCompany }) {
                         onChange={(e) => setSelectedUser(e.target.value)}
                         style={{ width: '25%' }} // Set the width to 100%
                     >
-                        {MyCompany.users.map((user) => (
+                        {myCompany.users.map((user) => (
                             <option key={user.id} value={user.id}>
                                 {user.username} - {user.fname} {user.lname}
                             </option>

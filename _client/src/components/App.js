@@ -5,55 +5,68 @@ import Login from "../pages/Login";
 
 import MyShifts from "../pages/MyShifts";
 import AvailableShifts from "../pages/AvailableShifts";
-// import Test from "../pages/Test";
 import BigCalendar from "../pages/BigCalendar";
 import CreateShift from "../pages/CreateShift";
 import UserSettings from "../pages/UserSettings";
 import CompanySettings from "../pages/CompanySettings";
-import CompanyShifts from "../pages/CompanyShifts"
+import DragAndDrop from "../pages/Calendar/DragAndDrop";
+// import CompanyShifts from "../pages/CompanyShifts"
 import { Error, FormField } from "../styles";
+import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [MyCompany, setMyCompany] = useState([]);
+  const [myCompany, setMyCompany] = useState([]);
+  // const [companyUsers, setCompanyUsers] = useState([]);
+  // const [companyShifts, setCompanyShifts] = useState([]);
+  const [loading, setLoading] = useState(true); // New loading state
   const [errors, setErrors] = useState([]);
 
+  // ON PAGE RELOAD
   useEffect(() => {
-    fetch("/mycompany")
-      .then((r) => r.json())
-      .then((data) => {
-        setMyCompany(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching MyCompany data:", error);
-      });
-  }, []);
-
-  useEffect(() => {
-    // auto-login
-    fetch("/api/me").then((r) => {
+    // AUTO LOGIN IF LOGGED IN BEFORE
+    fetch("/me").then((r) => {
       if (r.ok) {
         r.json().then((user) => {
           setUser(user)
         }
         );
-
       }
     });
+
+    //LOAD MY COMPANY
+    fetch("/mycompany")
+      .then((r) => r.json())
+      .then((data) => {
+        setMyCompany(data);
+        setLoading(false); // Data has been fetched, loading is done
+      })
+      .catch((error) => {
+        console.error("Error fetching MyCompany data:", error);
+        setLoading(true); // Even if there's an error, loading is done
+      });
   }, []);
 
-  //if no user logged in, return login/signup page instead
-  if (!user) return (
-    <>
-      <Login onLogin={setUser} setErrors={setErrors} />;
-      <FormField>
-        {errors.map((err) => (
-          <Error key={err}>{err}</Error>
-        ))}
-      </FormField>
-    </>)
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!user) {
+    return (
+      <>
+        <Login onLogin={setUser} setErrors={setErrors} setMyCompany={setMyCompany} />
+        <FormField>
+          {errors.map((err) => (
+            <Error key={err}>{err}</Error>
+          ))}
+        </FormField>
+      </>
+    );
+  }
 
   //otherwise return page dependent on switch
+  console.log("loading pages")
   return (
     <>
       <FormField>
@@ -65,30 +78,35 @@ function App() {
       <main>
         <Switch>
           <Route path="/settings">
-            <UserSettings user={user} setUser={setUser} MyCompany={MyCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
+            <UserSettings user={user} setUser={setUser} myCompany={myCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
           </Route>
           <Route path="/companysettings">
-            <CompanySettings user={user} MyCompany={MyCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
+            <CompanySettings user={user} myCompany={myCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
           </Route>
           <Route path="/createshift">
-            <CreateShift user={user} MyCompany={MyCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
+            <CreateShift user={user} myCompany={myCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
           </Route>
           <Route path="/open">
-            <AvailableShifts user={user} MyCompany={MyCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
+            <AvailableShifts user={user} myCompany={myCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
+          </Route>
+          <Route path="/test">
+            <BigCalendar user={user} myCompany={myCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
           </Route>
           <Route path="/bigcalendar">
-            <BigCalendar user={user} MyCompany={MyCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
+            <ChakraProvider>
+              <div style={{ height: "95vh" }}>
+                <DragAndDrop user={user} myCompany={myCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
+              </div>
+            </ChakraProvider>
           </Route>
-          {/* <Route path="/companyshifts">
-            <CompanyShifts user={user} />
-          </Route> */}
           <Route path="/">
-            <MyShifts user={user} MyCompany={MyCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
+            <MyShifts user={user} myCompany={myCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
           </Route>
         </Switch>
       </main>
     </>
   );
+
 }
 
 export default App;

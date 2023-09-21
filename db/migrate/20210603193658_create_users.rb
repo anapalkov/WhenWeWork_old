@@ -6,10 +6,10 @@ class CreateUsers < ActiveRecord::Migration[6.1] # rubocop:todo Style/Documentat
       t.belongs_to :company
       t.string :username
       t.string :password_digest
-      t.string :role
       t.string :fname
       t.string :lname
       t.string :email
+      t.string :role
       t.boolean :admin
       t.integer :companyrequest
       t.timestamps

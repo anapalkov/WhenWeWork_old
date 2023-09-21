@@ -5,10 +5,10 @@
     "node": "16.x"
   },
   "scripts": {
-    "build": "npm install --prefix client && npm run build --prefix client",
+    "build": "npm install --prefix _client && npm run build --prefix _client",
     "clean": "rm -rf public",
     "deploy": "cp -a client/build/. public/",
-    "heroku-postbuild": "npm run clean && npm run build && npm run deploy"
+    "heroku-postbuild": "npm install --prefix _client && npm run build --prefix _client"
   },
   "dependencies": {
     "react": "17.0.2",

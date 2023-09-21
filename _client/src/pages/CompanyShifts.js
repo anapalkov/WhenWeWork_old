@@ -13,7 +13,7 @@ function CompanyShifts({ user }) {
         setErrors([]);
         setIsLoading(true);
 
-        fetch(`/api/signup/${user.id}`, {
+        fetch(`/signup/${user.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

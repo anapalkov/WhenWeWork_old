@@ -4,7 +4,6 @@ class CreateCompanies < ActiveRecord::Migration[6.1] # rubocop:todo Style/Docume
   def change
     create_table :companies do |t|
       t.string :name
-      t.string :secretkey
       t.timestamps
     end
   end

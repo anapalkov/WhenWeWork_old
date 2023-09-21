@@ -12,9 +12,8 @@ class CompaniesController < ApplicationController # rubocop:todo Style/Documenta
     #company.users << @current_user
     if company.save
       @current_user.update(company: company)
-      logger.warn "This is a warning message"
-
-      unassigned_user = User.create_empty_user(username: "unassigned#{company.id}", company: company)
+      # logger.warn "This is a warning message"
+      # unassigned_user = User.create_empty_user(username: "unassigned#{company.id}", company: company)
       # unassigned_user.update(company: company)
 
       render json: company, status: :created

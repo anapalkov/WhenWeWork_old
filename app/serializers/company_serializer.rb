@@ -19,10 +19,13 @@
 class CompanySerializer < ActiveModel::Serializer
   attributes :id, :name
   has_many :users
+  has_many :shifts
 
   # def users
   #   ActiveModel::SerializableResource.new(object.users.includes(:shifts), each_serializer: UserSerializer)
   # end
+
+  #correct one
 
   def users
     object.users.includes(:shifts).map do |user|
@@ -38,9 +41,9 @@ class CompanySerializer < ActiveModel::Serializer
     end
   end
 
-  #   def users
-  #     object.users.includes(:shifts)
-  #   end
+  # def users
+  #   object.users.includes(:shifts)
+  # end
 
   # def users
   #   object.users.collect do |users|

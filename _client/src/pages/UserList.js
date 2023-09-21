@@ -4,21 +4,16 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 // import "react-table/react-table.css";
 
-function UserList({ user, MyCompany, setMyCompany }) {
-
-    console.log("USERLIST MY COMPANY")
-    console.log(MyCompany)
-
+function UserList({ user, myCompany, setMyCompany }) {
 
     const [errors, setErrors] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-
 
     function handleRemoveUser(id) {
         // e.preventDefault();
         setErrors([]);
         setIsLoading(true);
-        fetch(`/api/setcompany/${id}`, {
+        fetch(`/setcompany/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -44,8 +39,8 @@ function UserList({ user, MyCompany, setMyCompany }) {
 
     return (
         <div>
-            <h2>{MyCompany.name} employees</h2>
-            {!MyCompany.users ? (
+            <h2>{myCompany.name} employees</h2>
+            {!myCompany.users ? (
                 <p>Loading...</p>
             ) : (
                 <table>
@@ -59,7 +54,7 @@ function UserList({ user, MyCompany, setMyCompany }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {MyCompany.users.map((user) => (
+                        {myCompany.users.map((user) => (
                             <tr key={user.id}>
                                 <td>{user.fname} {user.lname}</td>
                                 <td>{user.username}</td>

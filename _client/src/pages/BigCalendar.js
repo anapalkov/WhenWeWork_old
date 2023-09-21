@@ -69,9 +69,9 @@ function OnSelectallShift() {
     }, [])
 }
 
-function BigCalendar({ user, MyCompany, setMyCompany }) {
+function BigCalendar({ user, myCompany, setMyCompany }) {
 
-    const [allShifts, setAllShifts] = useState([...MyCompany.users.reduce((acc, user) => acc.concat(user.shifts), [])]);
+    const [allShifts, setAllShifts] = useState([...myCompany.users.reduce((acc, user) => acc.concat(user.shifts), [])]);
     console.log("ALL Shifts")
     console.log(allShifts)
 
