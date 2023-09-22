@@ -24,6 +24,8 @@
     "src"
   ],
   "types": [
-    "@types/react-big-calendar"
+    "react",
+    "node",
+    "@types/react-big-calendar" /* Add this line */
   ]
 }
