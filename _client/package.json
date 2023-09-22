@@ -29,6 +29,7 @@
     "start": "PORT=4000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "client": "npm start --prefix _client",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
