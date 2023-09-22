@@ -5,7 +5,7 @@ import Login from "../pages/Login";
 
 import MyShifts from "../pages/MyShifts";
 import AvailableShifts from "../pages/AvailableShifts";
-import BigCalendar from "../pages/BigCalendar";
+// import BigCalendar from "../pages/BigCalendar";
 import CreateShift from "../pages/CreateShift";
 import UserSettings from "../pages/UserSettings";
 import CompanySettings from "../pages/CompanySettings";
