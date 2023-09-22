@@ -89,9 +89,9 @@ function App() {
           <Route path="/open">
             <AvailableShifts user={user} myCompany={myCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
           </Route>
-          <Route path="/test">
+          {/* <Route path="/test">
             <BigCalendar user={user} myCompany={myCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
-          </Route>
+          </Route> */}
           <Route path="/bigcalendar">
             <ChakraProvider>
               <div style={{ height: "95vh" }}>
