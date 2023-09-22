@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  #CHATGPT SHIT MIGHT DELETE
+  root "sessions#login"
+
   # get "/shifts", to: "shifts#index"
   # get '/companies', to: 'companies#index'
 
