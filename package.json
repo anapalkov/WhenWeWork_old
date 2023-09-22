@@ -2,7 +2,9 @@
   "name": "WhenWeWork",
   "description": "Build scripts for Heroku",
   "engines": {
-    "node": "16.x"
+    "node": "16.x",
+    "npm": "8.x",
+    "ruby": "3.3.0"
   },
   "scripts": {
     "build": "npm install --prefix _client && npm run build --prefix _client",
