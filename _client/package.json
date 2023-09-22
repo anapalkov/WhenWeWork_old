@@ -51,6 +51,5 @@
   },
   "devDependencies": {
     "@types/react-big-calendar": "^1.6.4",
-    "@babel/plugin-proposal-private-property-in-object": "^4.5.0"
   }
 }
