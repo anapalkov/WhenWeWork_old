@@ -99,9 +99,10 @@ function App() {
               </div>
             </ChakraProvider>
           </Route>
-          <Route path="/">
+          <Route path="*">
             <MyShifts user={user} myCompany={myCompany} setMyCompany={setMyCompany} setErrors={setErrors} />
           </Route>
+
         </Switch>
       </main>
     </>
