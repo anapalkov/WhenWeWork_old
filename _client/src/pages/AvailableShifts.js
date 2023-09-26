@@ -11,11 +11,10 @@ import DatePicker from 'react-datepicker'
 
 
 function AvailableShifts({ user, myCompany, setMyCompany }) {
-    // console.log("USER: ")
-    // console.log(user)
     const [selectedDate, setSelectedDate] = useState(null)
     const [companyShifts, setCompanyShifts] = useState([]);
     console.log(myCompany.shifts)
+
 
     // extract and sort shifts from myCompany that are currently being traded
     const allAvailableShifts = myCompany.users.map(user => user.shifts).flat().sort((a, b) => { return new Date(a.end) - new Date(b.end) }).filter((x) => x.trading === true)
